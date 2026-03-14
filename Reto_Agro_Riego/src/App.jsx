@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 //This is how we rename components for simplicity
-import {Home as Home} from './Screens/Home';
+import {Home as Home} from './Screens/Home.jsx';
 import './App.css';
 
 function App() {
