@@ -1,37 +1,40 @@
 import { NavLink } from "react-router-dom";
-import { HiViewGrid, HiLocationMarker, HiClock, HiBell} from "react-icons/hi"
+import { HiOutlineLocationMarker, HiOutlineClock, HiOutlineBell, HiOutlineHome} from "react-icons/hi"
+import './NavBar.css'
 
 function NavBar(){
     return(
         <nav className = "sidebar">
             <div className = "sidebar-logo">
                 <img src = "" alt = "AgroRiego Logo" />
-                <h2> AgroRiego </h2>
-                <span> Sistema Inteligente</span>
+                <div className = "logo-text">
+                    <h2> AgroRiego </h2>
+                    <span> Sistema Inteligente</span>
+                </div>
             </div>
 
             <ul className = "nav-links">
                 <li>
                     <NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>
-                        <HiViewGrid className="icon" />
+                        <HiOutlineHome className="icon" />
                         <span>Dashboard</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/areas" className={({ isActive }) => isActive ? "active" : ""}>
-                        <HiLocationMarker className="icon" />
+                        <HiOutlineLocationMarker className="icon" />
                         <span>Áreas de Riego</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/historial" className={({ isActive }) => isActive ? "active" : ""}>
-                        <HiClock className="icon" />
+                        <HiOutlineClock className="icon" />
                         <span>Historial</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/alertas" className={({ isActive }) => isActive ? "active" : ""}>
-                        <HiBell className="icon" />
+                        <HiOutlineBell className="icon" />
                         <span>Alertas</span>
                     </NavLink>
                 </li>
