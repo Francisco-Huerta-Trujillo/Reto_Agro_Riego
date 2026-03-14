@@ -19,19 +19,19 @@ function NavBar(){
                 </li>
                 <li>
                     <NavLink to="/areas" className={({ isActive }) => isActive ? "active" : ""}>
-                        <HiViewGrid className="icon" />
+                        <HiLocationMarker className="icon" />
                         <span>Áreas de Riego</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/historial" className={({ isActive }) => isActive ? "active" : ""}>
-                        <HiViewGrid className="icon" />
+                        <HiClock className="icon" />
                         <span>Historial</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/alertas" className={({ isActive }) => isActive ? "active" : ""}>
-                        <HiViewGrid className="icon" />
+                        <HiBell className="icon" />
                         <span>Alertas</span>
                     </NavLink>
                 </li>
