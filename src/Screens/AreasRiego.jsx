@@ -174,7 +174,7 @@ export function AreasRiegoPage() {
           <span className="font-semibold">Volver a Áreas de Riego</span>
         </button>
 
-        <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-2xl p-8 text-white shadow-lg">
+        <div className="bg-linear-to-r from-green-600 to-green-700 rounded-2xl p-8 text-white shadow-lg">
           <div className="flex items-start justify-between mb-4">
             <div>
               <div className="flex items-center gap-3 mb-2">
@@ -269,7 +269,7 @@ export function AreasRiegoPage() {
 
         <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
           <h3 className="text-xl font-bold text-slate-800 mb-6">Tendencia de Humedad - Últimas 24h</h3>
-          <div className="h-[300px] w-full">
+          <div className="h-75 w-full">
             <ResponsiveContainer>
               <AreaChart data={humedadTendencia}>
                 <defs>
@@ -319,7 +319,7 @@ export function AreasRiegoPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-xl text-white shadow-lg">
+        <div className="bg-linear-to-br from-green-500 to-green-600 p-6 rounded-xl text-white shadow-lg">
           <p className="text-sm opacity-80 mb-1">Áreas Regando Ahora</p>
           <p className="text-4xl font-bold">{areasActivas}</p>
         </div>

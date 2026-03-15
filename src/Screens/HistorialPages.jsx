@@ -201,7 +201,7 @@ export function HistorialPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-xl text-white shadow-lg">
+        <div className="bg-linear-to-br from-blue-500 to-blue-600 p-6 rounded-xl text-white shadow-lg">
           <Calendar className="mb-2" size={32} />
           <p className="text-sm opacity-80 mb-1">Eventos Hoy</p>
           <p className="text-4xl font-bold">{totalEventosHoy}</p>
@@ -240,7 +240,7 @@ export function HistorialPage() {
 
       <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
         <h3 className="text-xl font-bold text-slate-800 mb-6">Consumo de Agua - Última Semana</h3>
-        <div className="h-[300px] w-full">
+        <div className="h-75 w-full">
           <ResponsiveContainer>
             <BarChart data={consumoSemanal}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -301,7 +301,7 @@ export function HistorialPage() {
                     <div className={`w-12 h-12 ${tipoColor.bg} rounded-full flex items-center justify-center text-2xl shrink-0`}>
                       {tipoColor.icon}
                     </div>
-                    {!isLast && <div className="flex-1 w-0.5 bg-slate-300 mt-2 min-h-[40px]" />}
+                    {!isLast && <div className="flex-1 w-0.5 bg-slate-300 mt-2 min-h-10" />}
                   </div>
 
                   <div className="flex-1 pb-6">
