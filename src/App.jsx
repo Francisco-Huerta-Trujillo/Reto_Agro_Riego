@@ -1,26 +1,37 @@
-import { useState } from 'react';
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-//This is how we rename components for simplicity
-import Home from './Screens/Home';
-import './App.css';
-import NavBar from './Components/Layout/NavBar';
-import TopBar from './Components/Layout/TopBar';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Home from "./Screens/Home";
+import {AreasRiegoPage} from "./Screens/AreasRiego";
+import {HistorialPage} from "./Screens/HistorialPages";
+import NavBar from "./Components/Layout/NavBar";
+import TopBar from "./Components/Layout/TopBar";
+
+import "./App.css";
 
 function App() {
   return (
     <Router>
-      <div style={{ display: 'flex' }}>
+      <div className="flex min-h-screen w-full bg-slate-50">
+        {/* Sidebar: Asegúrate que NavBar.css tenga un width fijo (ej. 260px) */}
         <NavBar />
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '20px' }}>
+
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col min-w-0"> 
           <TopBar />
+          
+          <main className="p-6">
             <Routes>
               <Route path="/" element={<Home />} />
-              {/* Aquí irán las otras rutas después */}
+              <Route path="/areas" element={<AreasRiegoPage />} />
+              <Route path="/historial" element={<HistorialPage />} />
+              {/* Agregamos estas para que los links del NavBar no rompan la app */}
+              <Route path="/alertas" element={<div className="p-10">Alertas en desarrollo...</div>} />
             </Routes>
+          </main>
         </div>
       </div>
     </Router>
   );
 }
 
-export default App
+export default App;
