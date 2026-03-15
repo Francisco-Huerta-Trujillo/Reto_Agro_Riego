@@ -1,0 +1,74 @@
+.topbar {
+  background-color: white;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  border-bottom: 1px solid #e5e7eb;
+  border-radius: 12px; /* Redondeado como en tu mockup */
+  margin-bottom: 20px;
+}
+
+.topbar-left, .topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.selector-predio, .status-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #f3f4f6;
+  padding: 8px 15px;
+  border-radius: 10px;
+}
+
+.label {
+  font-size: 0.65rem;
+  color: #9ca3af;
+  display: block;
+  font-weight: bold;
+}
+
+.predio-dropdown {
+  border: none;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #1f2937;
+  outline: none;
+  background: transparent;
+}
+
+.status-text {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #059669; /* Verde de sistema normal */
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #10b981;
+}
+
+.notif-btn {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  color: #6b7280;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.notif-btn:hover {
+  background: #f3f4f6;
+}
