@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Screens/Home";
 import {AreasRiegoPage} from "./Screens/AreasRiego";
 import {HistorialPage} from "./Screens/HistorialPages";
+import {AlertsPages} from "./Screens/AlertsPages";
 import NavBar from "./Components/Layout/NavBar";
 import TopBar from "./Components/Layout/TopBar";
 
@@ -25,7 +26,7 @@ function App() {
               <Route path="/areas" element={<AreasRiegoPage />} />
               <Route path="/historial" element={<HistorialPage />} />
               {/* Agregamos estas para que los links del NavBar no rompan la app */}
-              <Route path="/alertas" element={<div className="p-10">Alertas en desarrollo...</div>} />
+              <Route path="/alertas" element={<AlertsPages/>} />
             </Routes>
           </main>
         </div>
