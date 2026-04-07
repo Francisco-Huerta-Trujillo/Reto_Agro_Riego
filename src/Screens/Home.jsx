@@ -3,6 +3,7 @@
 import AlertBanner from "../Components/Dashboard/AlertBanner";
 import StatCard from "../Components/Dashboard/StatCard";
 import { HiBeaker, HiSun, HiChartBar} from "react-icons/hi";
+import InteractiveMap from '../Components/Dashboard/InteractiveMap';
 
 /*Export allows us to experot many types of components from the page
 Meanwhile export default is the base setting if we export just the file*/ 
@@ -23,6 +24,7 @@ export default function Home(){
             </div>
 
             {/* Aquí iría el Mapa interactivo */}
+            <InteractiveMap />
 
             {/* Panel de Alertas */}
             <AlertBanner />
