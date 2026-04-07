@@ -16,16 +16,26 @@ export function AreasRiegoPage() {
       tipoCultivo: 'Cereal',
       estadoRiego: 'activo',
       humedad: 65,
-      temperatura: 24,
+      temperaturaSuelo: 22.0,
+      potencialHidrico: -35,
+      electroconductividad: 1.2,
       flujoAgua: 12.5,
-      tiempoRiego: '45 min',
-      proximoRiego: 'En 6 horas',
+      consumoSemanal: 300,
       consumoDiario: 85.3,
+      tiempoRiego: '45 min',
+      proximoRiego: '6 horas',
+      tipoProgramacion: 'Programado Automático',
+      temperaturaAmbiental: 28,
+      humedadRelativa: 45,
+      velocidadViento: 12,
+      radiacionSolar: 650,
+      evapotranspiracion: 6.2,
       sensoresActivos: 3,
+      estadoSensores: 'Monitoreo Continuo',
       ultimoMantenimiento: '2026-02-20',
       eficiencia: 87.5,
       coordenadas: '-33.4489, -70.6693',
-    },
+    },  
     {
       id: 'A2',
       name: 'Sector B - Zona 2',
@@ -35,16 +45,27 @@ export function AreasRiegoPage() {
       tipoCultivo: 'Cereal',
       estadoRiego: 'completado',
       humedad: 72,
-      temperatura: 22,
+      temperaturaSuelo: 21.5,
+      potencialHidrico: -25,
+      electroconductividad: 1.1,
       flujoAgua: 0,
-      tiempoRiego: '0 min',
-      proximoRiego: 'En 4 horas',
+      consumoSemanal: 340,
       consumoDiario: 102.8,
+      tiempoRiego: '0 min',
+      proximoRiego: '4 horas',
+      tipoProgramacion: 'Automático',
+      temperaturaAmbiental: 26,
+      humedadRelativa: 50,
+      velocidadViento: 10,
+      radiacionSolar: 600,
+      evapotranspiracion: 5.8,
       sensoresActivos: 4,
+      estadoSensores: 'Monitoreo Continuo',
       ultimoMantenimiento: '2026-02-18',
       eficiencia: 92.3,
       coordenadas: '-33.4512, -70.6705',
     },
+    // Agregué datos por defecto a los demás para que no rompa al seleccionarlos
     {
       id: 'N1',
       name: 'Zona Norte A',
@@ -54,12 +75,22 @@ export function AreasRiegoPage() {
       tipoCultivo: 'Cereal',
       estadoRiego: 'programado',
       humedad: 68,
-      temperatura: 21,
+      temperaturaSuelo: 20.0,
+      potencialHidrico: -40,
+      electroconductividad: 1.3,
       flujoAgua: 0,
-      tiempoRiego: '0 min',
-      proximoRiego: 'En 2 horas',
+      consumoSemanal: 280,
       consumoDiario: 72.5,
+      tiempoRiego: '0 min',
+      proximoRiego: '2 horas',
+      tipoProgramacion: 'Automático',
+      temperaturaAmbiental: 25,
+      humedadRelativa: 48,
+      velocidadViento: 14,
+      radiacionSolar: 620,
+      evapotranspiracion: 5.9,
       sensoresActivos: 2,
+      estadoSensores: 'Revisión Sugerida',
       ultimoMantenimiento: '2026-02-22',
       eficiencia: 85.0,
       coordenadas: '-33.4456, -70.6680',
@@ -73,12 +104,22 @@ export function AreasRiegoPage() {
       tipoCultivo: 'Leguminosa',
       estadoRiego: 'pausado',
       humedad: 32,
-      temperatura: 30,
+      temperaturaSuelo: 25.0,
+      potencialHidrico: -80,
+      electroconductividad: 1.5,
       flujoAgua: 0,
-      tiempoRiego: '0 min',
-      proximoRiego: 'Pausado - Manual',
+      consumoSemanal: 150,
       consumoDiario: 58.2,
+      tiempoRiego: '0 min',
+      proximoRiego: 'Pausado',
+      tipoProgramacion: 'Manual',
+      temperaturaAmbiental: 30,
+      humedadRelativa: 35,
+      velocidadViento: 18,
+      radiacionSolar: 700,
+      evapotranspiracion: 7.5,
       sensoresActivos: 2,
+      estadoSensores: 'Mantenimiento Requerido',
       ultimoMantenimiento: '2026-02-15',
       eficiencia: 68.5,
       coordenadas: '-33.4523, -70.6715',
@@ -92,12 +133,22 @@ export function AreasRiegoPage() {
       tipoCultivo: 'Hortícola',
       estadoRiego: 'activo',
       humedad: 70,
-      temperatura: 25,
+      temperaturaSuelo: 23.5,
+      potencialHidrico: -30,
+      electroconductividad: 1.8,
       flujoAgua: 15.2,
-      tiempoRiego: '32 min',
-      proximoRiego: 'En 8 horas',
+      consumoSemanal: 420,
       consumoDiario: 124.7,
+      tiempoRiego: '32 min',
+      proximoRiego: '8 horas',
+      tipoProgramacion: 'Automático',
+      temperaturaAmbiental: 27,
+      humedadRelativa: 55,
+      velocidadViento: 8,
+      radiacionSolar: 580,
+      evapotranspiracion: 5.2,
       sensoresActivos: 4,
+      estadoSensores: 'Monitoreo Continuo',
       ultimoMantenimiento: '2026-02-24',
       eficiencia: 90.2,
       coordenadas: '-33.4478, -70.6665',
@@ -111,12 +162,22 @@ export function AreasRiegoPage() {
       tipoCultivo: 'Hortícola',
       estadoRiego: 'programado',
       humedad: 64,
-      temperatura: 23,
+      temperaturaSuelo: 23.0,
+      potencialHidrico: -45,
+      electroconductividad: 1.7,
       flujoAgua: 0,
-      tiempoRiego: '0 min',
-      proximoRiego: 'En 3 horas',
+      consumoSemanal: 400,
       consumoDiario: 118.3,
+      tiempoRiego: '0 min',
+      proximoRiego: '3 horas',
+      tipoProgramacion: 'Automático',
+      temperaturaAmbiental: 26,
+      humedadRelativa: 52,
+      velocidadViento: 9,
+      radiacionSolar: 590,
+      evapotranspiracion: 5.4,
       sensoresActivos: 3,
+      estadoSensores: 'Monitoreo Continuo',
       ultimoMantenimiento: '2026-02-23',
       eficiencia: 88.7,
       coordenadas: '-33.4490, -70.6670',
@@ -162,6 +223,16 @@ export function AreasRiegoPage() {
   const totalConsumo = areas.reduce((acc, area) => acc + area.consumoDiario, 0);
   const areasActivas = areas.filter(a => a.estadoRiego === 'activo').length;
 
+  // Componente auxiliar para los demás datos (SUELO, RIEGO, AMBIENTAL)
+  const DataCard = ({ label, value }) => (
+    <div className="bg-white rounded-xl p-4 border border-green-400 shadow-sm">
+      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">{label}</p>
+      <p className="text-2xl font-semibold text-slate-800">{value}</p>
+    </div>
+  );
+
+
+  // Todo lo de la seleccion
   if (selectedArea) {
     const estadoColor = getEstadoColor(selectedArea.estadoRiego);
     return (
@@ -174,6 +245,7 @@ export function AreasRiegoPage() {
           <span className="font-semibold">Volver a Áreas de Riego</span>
         </button>
 
+        {/* 1. Cabecera verde */}
         <div className="bg-linear-to-r from-green-600 to-green-700 rounded-2xl p-8 text-white shadow-lg">
           <div className="flex items-start justify-between mb-4">
             <div>
@@ -197,103 +269,145 @@ export function AreasRiegoPage() {
               <p className="text-xs opacity-70">{selectedArea.tipoCultivo}</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-              <p className="text-sm opacity-80 mb-1">Eficiencia</p>
-              <p className="text-lg font-bold">{selectedArea.eficiencia}%</p>
+              <p className="text-sm opacity-80 mb-1">Consumo Diario</p>
+              <p className="text-lg font-bold">{selectedArea.consumoDiario} m³</p>
+              <p className="text-xs opacity-80 mt-1">Último día</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+              <p className="text-sm opacity-80 mb-1">Próximo Riego</p>
+              <p className="text-lg font-bold">{selectedArea.proximoRiego}</p>
+              <p className="text-xs opacity-80 mt-1">{selectedArea.tipoProgramacion}</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
               <p className="text-sm opacity-80 mb-1">Sensores</p>
               <p className="text-lg font-bold">{selectedArea.sensoresActivos} Activos</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-              <p className="text-sm opacity-80 mb-1">Consumo Diario</p>
-              <p className="text-lg font-bold">{selectedArea.consumoDiario} m³</p>
+              <p className="text-xs opacity-80 mt-1">Monitoreo Continuo</p>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-3 bg-blue-100 rounded-lg">
-                <Droplets className="text-blue-600" size={24} />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500 uppercase">Humedad</p>
-                <p className="text-2xl font-bold text-slate-800">{selectedArea.humedad}%</p>
-              </div>
+        {/* 2. Diseño de 3 columnas (SUELO, RIEGO, AMBIENTAL) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+          
+          {/* Columna: SUELO */}
+          <div className="space-y-4">
+            <div className="bg-white rounded-lg py-2 mb-6 border border-slate-200 shadow-sm">
+              <h3 className="text-center font-bold text-slate-700 tracking-wider">SUELO</h3>
             </div>
-            <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
-              <div
-                className={`h-full ${selectedArea.humedad < 40 ? 'bg-red-500' : selectedArea.humedad < 60 ? 'bg-yellow-500' : 'bg-green-500'}`}
-                style={{ width: `${selectedArea.humedad}%` }}
-              />
-            </div>
+            <DataCard label="Humedad de suelo" value={`${selectedArea.humedad}%`} />
+            <DataCard label="Potencial Hídrico" value={`${selectedArea.potencialHidrico} kPa`} />
+            <DataCard label="Electroconductividad" value={`${selectedArea.electroconductividad} dS/m`} />
+            <DataCard label="Temperatura" value={`${selectedArea.temperaturaSuelo.toFixed(1)} °C`} />
           </div>
 
-          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-3 bg-orange-100 rounded-lg">
-                <Thermometer className="text-orange-600" size={24} />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500 uppercase">Temperatura</p>
-                <p className="text-2xl font-bold text-slate-800">{selectedArea.temperatura}°C</p>
-              </div>
+          {/* Columna: RIEGO */}
+          <div className="space-y-4">
+            <div className="bg-white rounded-lg py-2 mb-6 border border-slate-200 shadow-sm">
+              <h3 className="text-center font-bold text-slate-700 tracking-wider">RIEGO</h3>
             </div>
+            <DataCard label="Flujo / Consumo Semanal" value={`${selectedArea.consumoSemanal} m³`} />
           </div>
 
-          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-3 bg-cyan-100 rounded-lg">
-                <TrendingDown className="text-cyan-600" size={24} />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500 uppercase">Flujo Agua</p>
-                <p className="text-2xl font-bold text-slate-800">{selectedArea.flujoAgua} L/min</p>
-              </div>
+          {/* Columna: AMBIENTAL */}
+          <div className="space-y-4">
+            <div className="bg-white rounded-lg py-2 mb-6 border border-slate-200 shadow-sm">
+              <h3 className="text-center font-bold text-slate-700 tracking-wider">AMBIENTAL</h3>
             </div>
+            <DataCard label="Temperatura" value={`${selectedArea.temperaturaAmbiental} °C`} />
+            <DataCard label="Humedad Relativa" value={`${selectedArea.humedadRelativa}%`} />
+            <DataCard label="Velocidad del viento" value={`${selectedArea.velocidadViento} km/h`} />
+            <DataCard label="Radiación Solar" value={`${selectedArea.radiacionSolar} W/m²`} />
+            <DataCard label="Evapotranspiración" value={`${selectedArea.evapotranspiracion} mm/día`} />
           </div>
 
-          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-3 bg-purple-100 rounded-lg">
-                <Clock className="text-purple-600" size={24} />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500 uppercase">Próximo Riego</p>
-                <p className="text-lg font-bold text-slate-800">{selectedArea.proximoRiego}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
-          <h3 className="text-xl font-bold text-slate-800 mb-6">Tendencia de Humedad - Últimas 24h</h3>
-          <div className="h-75 w-full">
-            <ResponsiveContainer>
-              <AreaChart data={humedadTendencia}>
-                <defs>
-                  <linearGradient id="colorHumedadDetalle" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="hora" stroke="#64748b" style={{ fontSize: '12px' }} />
-                <YAxis stroke="#64748b" style={{ fontSize: '12px' }} />
-                <Tooltip
-                  contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#fff' }}
-                />
-                <Legend />
-                <Line type="monotone" dataKey="optimo" stroke="#22c55e" strokeWidth={2} strokeDasharray="5 5" name="Nivel Óptimo" />
-                <Area type="monotone" dataKey="humedad" stroke="#3b82f6" strokeWidth={3} fill="url(#colorHumedadDetalle)" name="Humedad Actual" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
         </div>
       </div>
     );
   }
+
+  //       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+  //         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+  //           <div className="flex items-center gap-3 mb-3">
+  //             <div className="p-3 bg-blue-100 rounded-lg">
+  //               <Droplets className="text-blue-600" size={24} />
+  //             </div>
+  //             <div>
+  //               <p className="text-xs text-slate-500 uppercase">Humedad</p>
+  //               <p className="text-2xl font-bold text-slate-800">{selectedArea.humedad}%</p>
+  //             </div>
+  //           </div>
+  //           <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
+  //             <div
+  //               className={`h-full ${selectedArea.humedad < 40 ? 'bg-red-500' : selectedArea.humedad < 60 ? 'bg-yellow-500' : 'bg-green-500'}`}
+  //               style={{ width: `${selectedArea.humedad}%` }}
+  //             />
+  //           </div>
+  //         </div>
+
+  //         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+  //           <div className="flex items-center gap-3 mb-3">
+  //             <div className="p-3 bg-orange-100 rounded-lg">
+  //               <Thermometer className="text-orange-600" size={24} />
+  //             </div>
+  //             <div>
+  //               <p className="text-xs text-slate-500 uppercase">Temperatura</p>
+  //               <p className="text-2xl font-bold text-slate-800">{selectedArea.temperatura}°C</p>
+  //             </div>
+  //           </div>
+  //         </div>
+
+  //         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+  //           <div className="flex items-center gap-3 mb-3">
+  //             <div className="p-3 bg-cyan-100 rounded-lg">
+  //               <TrendingDown className="text-cyan-600" size={24} />
+  //             </div>
+  //             <div>
+  //               <p className="text-xs text-slate-500 uppercase">Flujo Agua</p>
+  //               <p className="text-2xl font-bold text-slate-800">{selectedArea.flujoAgua} L/min</p>
+  //             </div>
+  //           </div>
+  //         </div>
+
+  //         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+  //           <div className="flex items-center gap-3 mb-3">
+  //             <div className="p-3 bg-purple-100 rounded-lg">
+  //               <Clock className="text-purple-600" size={24} />
+  //             </div>
+  //             <div>
+  //               <p className="text-xs text-slate-500 uppercase">Próximo Riego</p>
+  //               <p className="text-lg font-bold text-slate-800">{selectedArea.proximoRiego}</p>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+
+  //       <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
+  //         <h3 className="text-xl font-bold text-slate-800 mb-6">Tendencia de Humedad - Últimas 24h</h3>
+  //         <div className="h-75 w-full">
+  //           <ResponsiveContainer>
+  //             <AreaChart data={humedadTendencia}>
+  //               <defs>
+  //                 <linearGradient id="colorHumedadDetalle" x1="0" y1="0" x2="0" y2="1">
+  //                   <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+  //                   <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+  //                 </linearGradient>
+  //               </defs>
+  //               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+  //               <XAxis dataKey="hora" stroke="#64748b" style={{ fontSize: '12px' }} />
+  //               <YAxis stroke="#64748b" style={{ fontSize: '12px' }} />
+  //               <Tooltip
+  //                 contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#fff' }}
+  //               />
+  //               <Legend />
+  //               <Line type="monotone" dataKey="optimo" stroke="#22c55e" strokeWidth={2} strokeDasharray="5 5" name="Nivel Óptimo" />
+  //               <Area type="monotone" dataKey="humedad" stroke="#3b82f6" strokeWidth={3} fill="url(#colorHumedadDetalle)" name="Humedad Actual" />
+  //             </AreaChart>
+  //           </ResponsiveContainer>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="space-y-6">
