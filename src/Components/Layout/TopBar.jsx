@@ -1,7 +1,17 @@
-import { HiOutlineLocationMarker, HiOutlineBell, HiCheckCircle } from "react-icons/hi";
+import { HiOutlineLocationMarker, HiOutlineBell, HiCheckCircle, HiOutlineLogout } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 import './TopBar.css';
 
 function TopBar(){
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        // 1. Limpiamos el almacenamiento
+        localStorage.removeItem("token");
+        // 2. Mandamos al usuario de patitas a la calle (al login)
+        navigate("/login");
+    };
+
     return(
         <header className = "topbar">
             <div className = "topbar-left">
@@ -26,6 +36,12 @@ function TopBar(){
                         </div>
                     <button className="notif-btn">
                         <HiOutlineBell />
+                    </button>
+                </div>
+                <div className="user-actions">
+                    <button onClick={handleLogout} className="logout-btn" title="Cerrar Sesión">
+                        <HiOutlineLogout />
+                        <span>Salir</span>
                     </button>
                 </div>
             </div>

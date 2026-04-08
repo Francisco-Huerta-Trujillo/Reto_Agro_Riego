@@ -72,3 +72,38 @@
 .notif-btn:hover {
   background: #f3f4f6;
 }
+
+/* Contenedor del botón para asegurar alineación */
+.user-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+/* Estilo principal del botón Salir */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent; 
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Efecto al pasar el mouse (Hover) - Un rojo suave de advertencia */
+.logout-btn:hover {
+  background-color: #fee2e2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+/* Ajustar el tamaño solo del ícono */
+.logout-btn svg {
+  font-size: 1.2rem;
+}
