@@ -2,41 +2,72 @@ import api from './axiosConfig'
 
 export const areaService = {
     getAll: async () => {
-        try{
-            const response = await api.get('/areas/');
+        try {
+            const response = await api.get(`/areas/`);
             return response.data;
-        } catch (error){
-            console.error("Error al obtener areas: ", error);
+        } catch (error) {
+            console.error(error);
             throw error;
         }
     },
 
     getById: async (id) => {
-        const response = await api.get('/areas/${id}');
-        return response.data;
+        try {
+            const response = await api.get(`/areas/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     },
 
     getSensors: async (id) => {
-        const response = await api.get('/areas/${id}/sensors');
-        return response.data;
+        try {
+            const response = await api.get(`/areas/${id}/sensors`);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     },
 
     getAlerts: async (id) => {
-    const response = await api.get(`/areas/${id}/alertas`);
-    return response.data;
-  },
+        try {
+            const response = await api.get(`/areas/${id}/alerts`);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
 
-  // No se si estos metodos si van aqui: Crear, actualizar y eliminar
-  create: async (data) => {
-    const response = await api.post('/areas', data);
-    return response.data;
-  },
-  update: async (id, data) => {
-    const response = await api.put(`/areas/${id}`, data);
-    return response.data;
-  },
-  delete: async (id) => {
-    const response = await api.delete(`/areas/${id}`);
-    return response.data;
-  }
+    create: async (data) => {
+        try {
+            const response = await api.post(`/areas/`, data);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+    
+    update: async (id, data) => {
+        try {
+            const response = await api.put(`/areas/${id}`, data);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+    
+    delete: async (id) => {
+        try {
+            const response = await api.delete(`/areas/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 };

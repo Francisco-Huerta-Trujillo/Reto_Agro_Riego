@@ -1,49 +1,49 @@
 import api from './axiosConfig'
 
-export const predioService = {
+export const userService = {
+    login: async (credenciales) => {
+        try {
+            const response = await api.post(`/usuarios/login`, credenciales);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+    
     getAll: async () => {
         try {
-            const response = await api.get(`/predios/`);
+            const response = await api.get(`/usuarios/`);
             return response.data;
         } catch (error) {
             console.error(error);
             throw error;
         }
     },
-
+    
     getById: async (id) => {
         try {
-            const response = await api.get(`/predios/${id}`);
+            const response = await api.get(`/usuarios/${id}`);
             return response.data;
         } catch (error) {
             console.error(error);
             throw error;
         }
     },
-
-    create: async (predio) => {
+    
+    create: async (user) => {
         try {
-            const response = await api.post(`/predios/`, predio);
+            const response = await api.post(`/usuarios/`, user);
             return response.data;
         } catch (error) {
             console.error(error);
             throw error;
         }
     },
-
-    update: async (id, predio) => {
-        try {
-            const response = await api.put(`/predios/${id}`, predio);
-            return response.data;
-        } catch (error) {
-            console.error(error);
-            throw error;
-        }
-    },
-
+    
     delete: async (id) => {
         try {
-            const response = await api.delete(`/predios/${id}`);
+            const response = await api.delete(`/usuarios/${id}`);
             return response.data;
         } catch (error) {
             console.error(error);
@@ -53,7 +53,7 @@ export const predioService = {
 
     getAreas: async (id) => {
         try {
-            const response = await api.get(`/predios/${id}/areas`);
+            const response = await api.get(`/usuarios/${id}/areas`);
             return response.data;
         } catch (error) {
             console.error(error);
