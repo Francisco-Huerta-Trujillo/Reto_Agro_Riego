@@ -3,6 +3,9 @@
 import AlertBanner from "../Components/Dashboard/AlertBanner";
 import StatCard from "../Components/Dashboard/StatCard";
 import { HiBeaker, HiSun, HiChartBar} from "react-icons/hi";
+import InteractiveMap from '../Components/Dashboard/InteractiveMap';
+import ChartHumedad from '../Components/Charts/ChartHumedad';
+import ChartConsumo from '../Components/Charts/ChartConsumo';
 
 /*Export allows us to experot many types of components from the page
 Meanwhile export default is the base setting if we export just the file*/ 
@@ -22,7 +25,14 @@ export default function Home(){
                 <StatCard title="Consumo de Agua" value="1,241" unit="m³" icon={HiChartBar} colorClass="text-orange-400" />
             </div>
 
-            {/* Aquí iría el Mapa interactivo */}
+{/* Aquí iría el Mapa interactivo */}
+            <InteractiveMap />
+
+            {/* Contenedor para los Gráficos Lado a Lado */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <ChartHumedad />
+                <ChartConsumo />
+            </div>
 
             {/* Panel de Alertas */}
             <AlertBanner />
