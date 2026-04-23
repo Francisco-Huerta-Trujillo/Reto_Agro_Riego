@@ -1,24 +1,31 @@
-import { HiOutlineLocationMarker, HiOutlineBell, HiCheckCircle, HiOutlineLogout } from "react-icons/hi";
+import React from "react";
+import { 
+    HiOutlineLocationMarker, 
+    HiOutlineBell, 
+    HiCheckCircle, 
+    HiOutlineLogout, 
+    HiOutlineEye // Nuevo icono para accesibilidad/daltonismo
+} from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import { useColorBlind } from "../../context/ColorBlindContext";
 import './TopBar.css';
 
-function TopBar(){
+function TopBar() {
     const navigate = useNavigate();
+    const { isColorBlindMode, toggleColorBlindMode } = useColorBlind();
 
     const handleLogout = () => {
-        // 1. Limpiamos el almacenamiento
         localStorage.removeItem("token");
-        // 2. Mandamos al usuario de patitas a la calle (al login)
         navigate("/login");
     };
 
-    return(
-        <header className = "topbar">
-            <div className = "topbar-left">
-                <div className = "selector-predio">
-                    <HiOutlineLocationMarker className = "icon-geo" />
-                    <div className = "selector-text">
-                        <span className = "label"> PREDIO ACTIVO </span>
+    return (
+        <header className="topbar">
+            <div className="topbar-left">
+                <div className="selector-predio">
+                    <HiOutlineLocationMarker className="icon-geo" />
+                    <div className="selector-text">
+                        <span className="label"> PREDIO ACTIVO </span>
                         <select className="predio-dropdown">
                             <option>Predio 1</option>
                             <option>Predio 2</option>
@@ -28,16 +35,32 @@ function TopBar(){
             </div>
 
             <div className="topbar-right">
-                <div className="status-badge">
-                    <div className="status-dot"></div>
-                        <div className="status-info">
-                            <span className="label"> ESTADO </span>
-                            <span className="status-text"> Sistema Normal <HiCheckCircle className="check-icon" /></span>
-                        </div>
-                    <button className="notif-btn">
-                        <HiOutlineBell />
-                    </button>
-                </div>
+                <div className="status-badge flex items-center gap-3 border border-gray-100 p-2 px-4 rounded-xl">
+    <div className={`status-dot w-2 h-2 rounded-full shadow-sm bg-status-ok shadow-status-ok`}></div>
+    <div className="status-info flex flex-col">
+        <span className="label text-[10px] font-bold text-gray-400">ESTADO</span>
+        <span className="status-text text-sm font-bold text-status-ok flex items-center gap-1">
+            Sistema Normal <HiCheckCircle />
+        </span>
+    </div>
+    
+    {/* Botón Modo Daltonismo con Tailwind */}
+    <button 
+        onClick={toggleColorBlindMode}
+        className={`p-2 rounded-full border transition-all duration-300 text-xl
+            ${isColorBlindMode 
+                ? 'bg-slate-800 border-slate-900 text-white shadow-inner translate-y-px' 
+                : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-gray-200'}`}
+        title="Modo Daltonismo"
+    >
+        <HiOutlineEye />
+    </button>
+
+    <button className="notif-btn bg-gray-50 border border-gray-200 p-2 rounded-full text-xl text-gray-500 hover:bg-gray-100">
+        <HiOutlineBell />
+    </button>
+</div>
+
                 <div className="user-actions">
                     <button onClick={handleLogout} className="logout-btn" title="Cerrar Sesión">
                         <HiOutlineLogout />
@@ -46,7 +69,7 @@ function TopBar(){
                 </div>
             </div>
         </header>
-    )
+    );
 }
 
-export default TopBar
+export default TopBar;

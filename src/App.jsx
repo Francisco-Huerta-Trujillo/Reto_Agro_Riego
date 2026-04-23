@@ -8,6 +8,7 @@ import Login from "./Screens/LogIn";
 
 import NavBar from "./Components/Layout/NavBar";
 import TopBar from "./Components/Layout/TopBar";
+import { ColorBlindProvider } from "./context/ColorBlindContext";
 
 import "./App.css";
 
@@ -34,25 +35,27 @@ const DashboardLayout = () => {
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Ruta Pública */}
-        <Route path="/login" element={<Login />} /> 
+    <ColorBlindProvider>
+      <Router>
+        <Routes>
+          {/* Ruta Pública */}
+          <Route path="/login" element={<Login />} /> 
 
-        {/* Rutas Privadas */}
-        <Route element={<PrivateLayout />}>
-          <Route element={<DashboardLayout />}>
-            <Route index element={<Home />} /> {/* Usar 'index' para la ruta raíz interna */}
-            <Route path="areas" element={<AreasRiegoPage />} />
-            <Route path="historial" element={<HistorialPage />} />
-            <Route path="alertas" element={<AlertsPages />} />
+          {/* Rutas Privadas */}
+          <Route element={<PrivateLayout />}>
+            <Route element={<DashboardLayout />}>
+              <Route index element={<Home />} /> {/* Usar 'index' para la ruta raíz interna */}
+              <Route path="areas" element={<AreasRiegoPage />} />
+              <Route path="historial" element={<HistorialPage />} />
+              <Route path="alertas" element={<AlertsPages />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* Catch-all: Si la ruta no existe, manda a login o home */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+          {/* Catch-all: Si la ruta no existe, manda a login o home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </ColorBlindProvider>
   );
 }
 

@@ -1,4 +1,27 @@
 @import "tailwindcss";
+
+/* ==================== VARIABLES DE COLORES ====================*/
+:root {
+  --color-status-ok: 16 185 129;    /* Emerald-500 en RGB */
+  --color-status-warn: 245 158 11;  /* Amber-500 */
+  --color-status-error: 239 68 68;  /* Red-500 */
+  --color-primary-green: 62 163 75;  /* Verde principal */
+  --color-secondary-green: 34 197 94; /* Verde secundario */
+}
+
+/* ==================== MODO DALTONISMO ====================*/
+body.color-blind-mode {
+  --color-status-ok: 37 99 235;     /* Blue-600 (Apto daltonismo) */
+  --color-status-warn: 234 179 8;   /* Yellow-500 */
+  --color-status-error: 213 94 0;    /* Orange-600 (Naranja) */
+  --color-primary-green: 2 132 199; /* Cyan-600 para daltonismo */
+  --color-secondary-green: 3 102 214; /* Blue-600 */
+  
+  /* Aumentar contraste y saturación */
+  filter: saturate(1.15) contrast(1.1);
+}
+
+/* ==================== ESTILOS ORIGINALES ====================*/
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -40,4 +63,402 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* ==================== COLORES DE ESTADO (con variables CSS) ====================*/
+.text-status-ok {
+  color: rgb(var(--color-status-ok)) !important;
+}
+
+.bg-status-ok {
+  background-color: rgb(var(--color-status-ok)) !important;
+}
+
+.shadow-status-ok {
+  --tw-shadow-color: rgb(var(--color-status-ok)) / 0.5 !important;
+}
+
+.text-status-warn {
+  color: rgb(var(--color-status-warn)) !important;
+}
+
+.bg-status-warn {
+  background-color: rgb(var(--color-status-warn)) !important;
+}
+
+.text-status-error {
+  color: rgb(var(--color-status-error)) !important;
+}
+
+.bg-status-error {
+  background-color: rgb(var(--color-status-error)) !important;
+}
+
+.border-status-ok {
+  border-color: rgb(var(--color-status-ok)) !important;
+}
+
+.border-status-warn {
+  border-color: rgb(var(--color-status-warn)) !important;
+}
+
+.border-status-error {
+  border-color: rgb(var(--color-status-error)) !important;
+}
+
+/* ==================== COLORES VERDES → AZUL DALTONISMO ====================*/
+/* Fondos verdes */
+body.color-blind-mode .bg-green-50 {
+  background-color: #f0f9ff !important;
+}
+body.color-blind-mode .bg-green-100 {
+  background-color: #e0f2fe !important;
+}
+body.color-blind-mode .bg-green-200 {
+  background-color: #bae6fd !important;
+}
+body.color-blind-mode .bg-green-300 {
+  background-color: #7dd3fc !important;
+}
+body.color-blind-mode .bg-green-400 {
+  background-color: #38bdf8 !important;
+}
+body.color-blind-mode .bg-green-500 {
+  background-color: #0ea5e9 !important;
+}
+body.color-blind-mode .bg-green-600 {
+  background-color: #0284c7 !important;
+}
+body.color-blind-mode .bg-green-700 {
+  background-color: #0369a1 !important;
+}
+body.color-blind-mode .bg-green-800 {
+  background-color: #075985 !important;
+}
+body.color-blind-mode .bg-green-900 {
+  background-color: #0c4a6e !important;
+}
+
+/* Texto verde */
+body.color-blind-mode .text-green-50 {
+  color: #f0f9ff !important;
+}
+body.color-blind-mode .text-green-100 {
+  color: #e0f2fe !important;
+}
+body.color-blind-mode .text-green-200 {
+  color: #bae6fd !important;
+}
+body.color-blind-mode .text-green-300 {
+  color: #7dd3fc !important;
+}
+body.color-blind-mode .text-green-400 {
+  color: #38bdf8 !important;
+}
+body.color-blind-mode .text-green-500 {
+  color: #0ea5e9 !important;
+}
+body.color-blind-mode .text-green-600 {
+  color: #0284c7 !important;
+}
+body.color-blind-mode .text-green-700 {
+  color: #0369a1 !important;
+}
+body.color-blind-mode .text-green-800 {
+  color: #075985 !important;
+}
+body.color-blind-mode .text-green-900 {
+  color: #0c4a6e !important;
+}
+
+/* Bordes verdes */
+body.color-blind-mode .border-green-50 {
+  border-color: #f0f9ff !important;
+}
+body.color-blind-mode .border-green-100 {
+  border-color: #e0f2fe !important;
+}
+body.color-blind-mode .border-green-200 {
+  border-color: #bae6fd !important;
+}
+body.color-blind-mode .border-green-300 {
+  border-color: #7dd3fc !important;
+}
+body.color-blind-mode .border-green-400 {
+  border-color: #38bdf8 !important;
+}
+body.color-blind-mode .border-green-500 {
+  border-color: #0ea5e9 !important;
+}
+body.color-blind-mode .border-green-600 {
+  border-color: #0284c7 !important;
+}
+body.color-blind-mode .border-green-700 {
+  border-color: #0369a1 !important;
+}
+body.color-blind-mode .border-green-800 {
+  border-color: #075985 !important;
+}
+body.color-blind-mode .border-green-900 {
+  border-color: #0c4a6e !important;
+}
+
+/* ==================== COLORES ROJOS → NARANJA DALTONISMO ====================*/
+/* Fondos rojos */
+body.color-blind-mode .bg-red-50 {
+  background-color: #fff7ed !important;
+}
+body.color-blind-mode .bg-red-100 {
+  background-color: #ffedd5 !important;
+}
+body.color-blind-mode .bg-red-200 {
+  background-color: #fed7aa !important;
+}
+body.color-blind-mode .bg-red-300 {
+  background-color: #fdba74 !important;
+}
+body.color-blind-mode .bg-red-400 {
+  background-color: #fb923c !important;
+}
+body.color-blind-mode .bg-red-500 {
+  background-color: #f97316 !important;
+}
+body.color-blind-mode .bg-red-600 {
+  background-color: #ea580c !important;
+}
+body.color-blind-mode .bg-red-700 {
+  background-color: #c2410c !important;
+}
+body.color-blind-mode .bg-red-800 {
+  background-color: #9a3412 !important;
+}
+body.color-blind-mode .bg-red-900 {
+  background-color: #7c2d12 !important;
+}
+
+/* Texto rojo */
+body.color-blind-mode .text-red-50 {
+  color: #fff7ed !important;
+}
+body.color-blind-mode .text-red-100 {
+  color: #ffedd5 !important;
+}
+body.color-blind-mode .text-red-200 {
+  color: #fed7aa !important;
+}
+body.color-blind-mode .text-red-300 {
+  color: #fdba74 !important;
+}
+body.color-blind-mode .text-red-400 {
+  color: #fb923c !important;
+}
+body.color-blind-mode .text-red-500 {
+  color: #f97316 !important;
+}
+body.color-blind-mode .text-red-600 {
+  color: #ea580c !important;
+}
+body.color-blind-mode .text-red-700 {
+  color: #c2410c !important;
+}
+body.color-blind-mode .text-red-800 {
+  color: #9a3412 !important;
+}
+body.color-blind-mode .text-red-900 {
+  color: #7c2d12 !important;
+}
+
+/* Bordes rojos */
+body.color-blind-mode .border-red-50 {
+  border-color: #fff7ed !important;
+}
+body.color-blind-mode .border-red-100 {
+  border-color: #ffedd5 !important;
+}
+body.color-blind-mode .border-red-200 {
+  border-color: #fed7aa !important;
+}
+body.color-blind-mode .border-red-300 {
+  border-color: #fdba74 !important;
+}
+body.color-blind-mode .border-red-400 {
+  border-color: #fb923c !important;
+}
+body.color-blind-mode .border-red-500 {
+  border-color: #f97316 !important;
+}
+body.color-blind-mode .border-red-600 {
+  border-color: #ea580c !important;
+}
+body.color-blind-mode .border-red-700 {
+  border-color: #c2410c !important;
+}
+body.color-blind-mode .border-red-800 {
+  border-color: #9a3412 !important;
+}
+body.color-blind-mode .border-red-900 {
+  border-color: #7c2d12 !important;
+}
+
+/* ==================== COLORES AMARILLOS → AMARILLO CLARO (mantener) ====================*/
+body.color-blind-mode .bg-yellow-50 {
+  background-color: #fefce8 !important;
+}
+body.color-blind-mode .bg-yellow-100 {
+  background-color: #fef3c7 !important;
+}
+body.color-blind-mode .text-yellow-600 {
+  color: #ca8a04 !important;
+}
+body.color-blind-mode .text-yellow-700 {
+  color: #b45309 !important;
+}
+body.color-blind-mode .text-yellow-800 {
+  color: #92400e !important;
+}
+body.color-blind-mode .border-yellow-300 {
+  border-color: #fcd34d !important;
+}
+body.color-blind-mode .border-yellow-500 {
+  border-color: #eab308 !important;
+}
+
+/* ==================== COLORES AZULES (mantener pero aumentar claridad) ====================*/
+body.color-blind-mode .bg-blue-50 {
+  background-color: #eff6ff !important;
+}
+body.color-blind-mode .bg-blue-100 {
+  background-color: #dbeafe !important;
+}
+body.color-blind-mode .text-blue-600 {
+  color: #2563eb !important;
+}
+body.color-blind-mode .text-blue-700 {
+  color: #1d4ed8 !important;
+}
+body.color-blind-mode .text-blue-800 {
+  color: #1e40af !important;
+}
+body.color-blind-mode .border-blue-300 {
+  border-color: #93c5fd !important;
+}
+
+/* ==================== EFECTOS VISUALES EN DALTONISMO ====================*/
+body.color-blind-mode .status-text {
+  color: #0056b3 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
+}
+
+body.color-blind-mode .status-dot {
+  background-color: #0284c7 !important;
+  box-shadow: 0 0 5px #0284c7 !important;
+}
+
+/* ==================== GRADIENTES LINEALES ====================*/
+body.color-blind-mode .from-green-600 {
+  --tw-gradient-from: #0284c7 !important;
+  --tw-gradient-to: rgb(2 132 199 / 0) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+body.color-blind-mode .to-green-700 {
+  --tw-gradient-to: #0369a1 !important;
+}
+
+body.color-blind-mode .from-red-500 {
+  --tw-gradient-from: #f97316 !important;
+  --tw-gradient-to: rgb(249 115 22 / 0) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+body.color-blind-mode .to-red-600 {
+  --tw-gradient-to: #ea580c !important;
+}
+
+body.color-blind-mode .from-yellow-500 {
+  --tw-gradient-from: #eab308 !important;
+  --tw-gradient-to: rgb(234 179 8 / 0) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+body.color-blind-mode .to-yellow-600 {
+  --tw-gradient-to: #ca8a04 !important;
+}
+
+body.color-blind-mode .from-blue-500 {
+  --tw-gradient-from: #3b82f6 !important;
+  --tw-gradient-to: rgb(59 130 246 / 0) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+body.color-blind-mode .to-blue-600 {
+  --tw-gradient-to: #2563eb !important;
+}
+
+/* ==================== ESTADOS HOVER ====================*/
+body.color-blind-mode .hover\:bg-green-200:hover {
+  background-color: #bae6fd !important;
+}
+body.color-blind-mode .hover\:bg-green-600:hover {
+  background-color: #0284c7 !important;
+}
+body.color-blind-mode .hover\:bg-green-700:hover {
+  background-color: #0369a1 !important;
+}
+body.color-blind-mode .hover\:text-green-700:hover {
+  color: #0369a1 !important;
+}
+body.color-blind-mode .hover\:border-green-300:hover {
+  border-color: #7dd3fc !important;
+}
+body.color-blind-mode .hover\:bg-red-600:hover {
+  background-color: #ea580c !important;
+}
+body.color-blind-mode .hover\:bg-red-700:hover {
+  background-color: #c2410c !important;
+}
+body.color-blind-mode .hover\:bg-red-100:hover {
+  background-color: #ffedd5 !important;
+}
+body.color-blind-mode .hover\:text-red-700:hover {
+  color: #c2410c !important;
+}
+body.color-blind-mode .hover\:border-red-100:hover {
+  border-color: #ffedd5 !important;
+}
+body.color-blind-mode .hover\:border-red-300:hover {
+  border-color: #fdba74 !important;
+}
+
+/* ==================== ESTADOS FOCUS ====================*/
+body.color-blind-mode .focus\:bg-green-700:focus {
+  background-color: #0369a1 !important;
+}
+body.color-blind-mode .focus\:border-green-600:focus {
+  border-color: #0284c7 !important;
+}
+body.color-blind-mode .focus\:ring-green-500:focus {
+  --tw-ring-color: #0ea5e9 !important;
+}
+
+/* ==================== ANIMACIONES (pulse) ====================*/
+body.color-blind-mode .animate-pulse {
+  animation: daltonismo-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes daltonismo-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ==================== BORDE PERSONALIZADO #0EFF0A → AZUL ====================*/
+body.color-blind-mode [class*="border-\[#0EFF0A\]"],
+body.color-blind-mode [style*="border-[#0EFF0A]"],
+body.color-blind-mode .border-\[\#0EFF0A\] {
+  border-color: #0284c7 !important;
 }

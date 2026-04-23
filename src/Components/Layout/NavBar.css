@@ -36,6 +36,11 @@
     color: #4ade80; 
 }
 
+/* MODO DALTONISMO - cambiar verde a amarillo/naranja para mejor visibilidad */
+body.color-blind-mode .logo-text span {
+    color: #FFA500; /* Naranja para mejor contraste en daltonismo */
+}
+
 .nav-links {
   list-style: none;
   padding: 0;
@@ -63,6 +68,12 @@
 /* El estado ACTIVO (cuando estás en esa pantalla) */
 .nav-links li a.active {
   background-color: #3EA34B; /* El verde que me pasaste */
+  color: white;
+}
+
+/* MODO DALTONISMO - cambiar verde a azul cielo para el estado activo */
+body.color-blind-mode .nav-links li a.active {
+  background-color: #0284C7; /* Azul cielo para mejor visibilidad */
   color: white;
 }
 

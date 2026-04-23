@@ -30,12 +30,27 @@
   background-color: green;
 }
 
+/* MODO DALTONISMO - cambiar verde a azul */
+body.color-blind-mode .marker-green {
+  background-color: #0284c7;
+}
+
 .marker-yellow {
   background-color: yellow;
 }
 
+/* MODO DALTONISMO - mantener amarillo pero más claro */
+body.color-blind-mode .marker-yellow {
+  background-color: #fbbf24;
+}
+
 .marker-red {
   background-color: red;
+}
+
+/* MODO DALTONISMO - cambiar rojo a naranja */
+body.color-blind-mode .marker-red {
+  background-color: #f97316;
 }
 
 .popup {
@@ -59,12 +74,27 @@
   color: green;
 }
 
+/* MODO DALTONISMO - cambiar verde a azul */
+body.color-blind-mode .status-green {
+  color: #0284c7;
+}
+
 .status-yellow {
   color: yellow;
 }
 
+/* MODO DALTONISMO - mantener amarillo pero más claro */
+body.color-blind-mode .status-yellow {
+  color: #fbbf24;
+}
+
 .status-red {
   color: red;
+}
+
+/* MODO DALTONISMO - cambiar rojo a naranja */
+body.color-blind-mode .status-red {
+  color: #f97316;
 }
 
 .close-popup {

@@ -61,9 +61,9 @@ export function AlertsPages() {
   // --- Helpers de Configuración ---
   const getAlertConfig = (severity) => {
     const configs = {
-      critical: { bg: 'bg-red-50', border: 'border-red-300', icon: 'text-red-600', iconBg: 'bg-red-100', title: 'text-red-800', badge: 'bg-red-500' },
-      warning: { bg: 'bg-yellow-50', border: 'border-yellow-300', icon: 'text-yellow-600', iconBg: 'bg-yellow-100', title: 'text-yellow-800', badge: 'bg-yellow-500' },
-      info: { bg: 'bg-blue-50', border: 'border-blue-300', icon: 'text-blue-600', iconBg: 'bg-blue-100', title: 'text-blue-800', badge: 'bg-blue-500' }
+      critical: { bg: 'bg-white', border: 'border-[#0EFF0A]', icon: 'text-red-600', iconBg: 'bg-red-50', title: 'text-gray-800', badge: 'bg-red-500' },
+      warning: { bg: 'bg-white', border: 'border-[#0EFF0A]', icon: 'text-yellow-600', iconBg: 'bg-yellow-50', title: 'text-gray-800', badge: 'bg-yellow-500' },
+      info: { bg: 'bg-white', border: 'border-[#0EFF0A]', icon: 'text-blue-600', iconBg: 'bg-blue-50', title: 'text-gray-800', badge: 'bg-blue-500' }
     };
     return configs[severity] || configs.info;
   };
@@ -145,7 +145,7 @@ export function AlertsPages() {
       </div>
 
       {/* Barra de Filtros */}
-      <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex flex-col lg:flex-row gap-4 items-center justify-between">
+      <div className="bg-white rounded-xl p-4 border-2 border-[#0EFF0A] shadow-sm flex flex-col lg:flex-row gap-4 items-center justify-between">
         <div className="flex flex-wrap gap-2">
           {['todas', 'critical', 'warning', 'info'].map((sev) => (
             <button
@@ -209,8 +209,8 @@ function StatCard({ color, icon, label, value }) {
 
 function AlertItem({ alert, config, Icon, onResolve, onDelete, isExpanded, onExpand }) {
   return (
-    <div className={`bg-white rounded-xl border-2 ${config.border} shadow-sm overflow-hidden transition-all ${alert.resolved ? 'opacity-50 grayscale-[0.5]' : ''}`}>
-      <div className={`p-5 ${config.bg}`}>
+    <div className={`bg-white rounded-xl border-2 border-[#0EFF0A] shadow-sm overflow-hidden transition-all ${alert.resolved ? 'opacity-50 grayscale-[0.5]' : ''}`}>
+      <div className={`p-5 bg-white`}>
         <div className="flex gap-4">
           <div className={`p-3 h-fit ${config.iconBg} rounded-lg`}>
             <Icon className={config.icon} size={24} />
@@ -267,7 +267,7 @@ function AlertItem({ alert, config, Icon, onResolve, onDelete, isExpanded, onExp
 
 function EmptyState() {
   return (
-    <div className="bg-white rounded-xl p-12 text-center border-2 border-dashed border-slate-200">
+    <div className="bg-white rounded-xl p-12 text-center border-2 border-dashed border-[#0EFF0A]">
       <CheckCircle className="mx-auto text-green-100 mb-4" size={64} />
       <h3 className="text-xl font-bold text-slate-800">Todo bajo control</h3>
       <p className="text-slate-500">No hay alertas activas que coincidan con los filtros.</p>

@@ -157,7 +157,7 @@ return (
       )}
     </div>
 
-    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm min-h-87.5 flex flex-col justify-center">
+    <div className="bg-white p-6 rounded-2xl border-2 border-[#0EFF0A] shadow-sm min-h-87.5 flex flex-col justify-center">
       {loading ? (
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="animate-spin text-green-600" size={32} />

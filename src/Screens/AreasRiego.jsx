@@ -84,7 +84,7 @@ export function AreasRiegoPage() {
   const areasActivas = areas.filter(a => a.estadoRiego === 'activo').length;
 
   const DataCard = ({ label, value }) => (
-    <div className="bg-white rounded-xl p-4 border border-green-400 shadow-sm">
+    <div className="bg-white rounded-xl p-4 border-2 border-[#0EFF0A] shadow-sm">
       <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">{label}</p>
       <p className="text-2xl font-semibold text-slate-800">{value}</p>
     </div>
@@ -196,10 +196,10 @@ export function AreasRiegoPage() {
           return (
             <div
               key={area.id}
-              className="bg-white rounded-xl border border-slate-200 shadow-lg overflow-hidden hover:shadow-xl transition-all cursor-pointer group"
+              className="bg-white rounded-xl border-2 border-[#0EFF0A] shadow-lg overflow-hidden hover:shadow-xl transition-all cursor-pointer group"
               onClick={() => setSelectedArea(area)}
             >
-              <div className={`p-4 ${estadoColor.bg} border-b ${estadoColor.border}`}>
+              <div className={`p-4 bg-white border-b`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className={`w-3 h-3 rounded-full ${estadoColor.dot} ${area.estadoRiego === 'activo' ? 'animate-pulse' : ''}`} />
