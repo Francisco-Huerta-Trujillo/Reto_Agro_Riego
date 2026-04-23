@@ -31,8 +31,8 @@ export function AreasRiegoPage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/areas-riego.json');
-        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        const response = await fetch('http://10.34.23.233:8000/areas-riego.json');
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);  
         const data = await response.json();
         setAreas(data);
       } catch (err) {
@@ -154,7 +154,7 @@ export function HistorialPage() {
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm min-h-87.5 flex flex-col justify-center">
         {loading ? (
           <div className="flex flex-col items-center gap-3">
-            <Loader2 className="animate-spin bg-green-600 text-white rounded-lg " size={32} />
+            <Loader2 className="animate-spin text-green-600 rounded-lg " size={32} />
             <p className="text-slate-400">Procesando estadísticas...</p>
           </div>
         ) : error ? (
