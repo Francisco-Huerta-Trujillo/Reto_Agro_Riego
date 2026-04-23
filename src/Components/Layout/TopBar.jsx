@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { 
     HiOutlineLocationMarker, 
     HiOutlineBell, 
@@ -8,11 +8,25 @@ import {
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { useColorBlind } from "../../context/ColorBlindContext";
+import { usePredio } from "../../context/PredioContext";
 import './TopBar.css';
 
 function TopBar() {
     const navigate = useNavigate();
     const { isColorBlindMode, toggleColorBlindMode } = useColorBlind();
+    const { predios, selectedPredioId, setPredio, loadingPredios, predioError } = usePredio();
+    const [localSelected, setLocalSelected] = useState(selectedPredioId);
+
+    useEffect(() => {
+      setLocalSelected(selectedPredioId);
+    }, [selectedPredioId]);
+
+    const handlePredioChange = (event) => {
+      const selectedId = event.target.value;
+      setLocalSelected(selectedId);
+      setPredio(selectedId);
+    };
+
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -26,9 +40,20 @@ function TopBar() {
                     <HiOutlineLocationMarker className="icon-geo" />
                     <div className="selector-text">
                         <span className="label"> PREDIO ACTIVO </span>
-                        <select className="predio-dropdown">
-                            <option>Predio 1</option>
-                            <option>Predio 2</option>
+                        <select
+                            className="predio-dropdown"
+                            value={localSelected}
+                            onChange={handlePredioChange}
+                            disabled={loadingPredios || predios.length === 0}
+                        >
+                            {loadingPredios && <option value="">Cargando predios...</option>}
+                            {!loadingPredios && predioError && <option value="">Error al cargar</option>}
+                            {!loadingPredios && !predioError && predios.length === 0 && <option value="">No hay predios</option>}
+                            {!loadingPredios && !predioError && predios.map((predio) => (
+                                <option key={predio.id} value={predio.id}>
+                                    {predio.name || predio.nombre || predio.label || predio.id}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>

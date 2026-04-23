@@ -1,18 +1,25 @@
 import { HiExclamationCircle } from "react-icons/hi";
 import { useState, useEffect } from "react";
+import { usePredio } from '../../context/PredioContext';
 import { Loader2, AlertCircle } from "lucide-react";
 
 const AlertBanner = () => {
+  const { selectedPredioId } = usePredio();
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchAlerts = async () => {
+      if (!selectedPredioId) {
+        setAlerts([]);
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
-        // Cambia esta URL por tu endpoint real (ej: /api/active-alerts)
-        const response = await fetch('/api/active-alerts.json');
+        const response = await fetch(`/api/active-alerts.json?predioId=${selectedPredioId}`);
         
         if (!response.ok) {
           throw new Error("No se pudo sincronizar con el panel de control.");
@@ -29,7 +36,7 @@ const AlertBanner = () => {
     };
 
     fetchAlerts();
-  }, []);
+  }, [selectedPredioId]);
 
   // --- Estado de Carga ---
   if (loading) {

@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { usePredio } from '../../context/PredioContext';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Loader2, AlertCircle } from 'lucide-react';
 
 const ChartHumedad = () => {
+  const { selectedPredioId } = usePredio();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchHumedad = async () => {
+      if (!selectedPredioId) {
+        setData([]);
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
-        // Cambia por tu endpoint real (ej: /api/humedad-suelo)
-        const response = await fetch('/api/humedad-suelo.json');
+        const response = await fetch(`/api/humedad-suelo.json?predioId=${selectedPredioId}`);
         
         if (!response.ok) {
           throw new Error('No se pudo establecer comunicación con los sensores.');
@@ -34,7 +41,7 @@ const ChartHumedad = () => {
     };
 
     fetchHumedad();
-  }, []);
+  }, [selectedPredioId]);
 
   // --- Estado de Carga (Sutil y limpio) ---
   if (loading) {

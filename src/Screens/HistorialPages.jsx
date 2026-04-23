@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { usePredio } from '../context/PredioContext';
 import { 
   Droplets, MapPin, Clock, TrendingDown, TrendingUp, ChevronRight, 
   ArrowLeft, Calendar, Thermometer, Loader2, AlertCircle, Search, 
@@ -121,16 +122,22 @@ export function HistorialPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { selectedPredioId, loadingPredios } = usePredio();
+
   useEffect(() => {
     const fetchConsumo = async () => {
+      if (!selectedPredioId) {
+        setDataConsumo([]);
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
-        // Intentar cargar datos de consumo semanal
-        const response = await fetch('/api/consumo-semanal.json');
+        const response = await fetch(`/api/consumo-semanal.json?predioId=${selectedPredioId}`);
         if (!response.ok) throw new Error("No se pudieron cargar los datos de la gráfica.");
         const data = await response.json();
         
-        // Validación de que los datos tengan el formato para Recharts
         if (!Array.isArray(data) || data.length === 0) throw new Error("Los datos de consumo están vacíos.");
         
         setDataConsumo(data);
@@ -141,22 +148,23 @@ export function HistorialPage() {
       }
     };
     fetchConsumo();
-  }, []);
+  }, [selectedPredioId]);
 
 return (
   <div className="space-y-6 pt-10 border-t border-slate-200 mt-10">
     <div className="flex justify-between items-center">
       <h2 className="text-2xl font-bold text-slate-800">Consumo Semanal</h2>
-      
-      {/* Renderizado condicional: 
-          Solo mostramos el botón si NO está cargando y NO hay error 
-      */}
-      {!loading && !error && (
-        <button className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors animate-in fade-in duration-300">
-          <Download size={18}/> Exportar Reporte
-        </button>
-      )}
+      <span className="text-slate-500 text-sm">Predio activo: {selectedPredioId || 'No seleccionado'}</span>
     </div>
+    
+    {/* Renderizado condicional: 
+        Solo mostramos el botón si NO está cargando y NO hay error 
+    */}
+    {!loading && !error && (
+      <button className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors animate-in fade-in duration-300">
+        <Download size={18}/> Exportar Reporte
+      </button>
+    )}
 
     <div className="bg-white p-6 rounded-2xl border-2 border-slate-300 shadow-sm min-h-87.5 flex flex-col justify-center">
       {loading ? (

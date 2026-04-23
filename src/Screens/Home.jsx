@@ -6,17 +6,24 @@ import InteractiveMap from '../Components/Dashboard/InteractiveMap';
 import ChartHumedad from '../Components/Charts/ChartHumedad';
 import ChartConsumo from '../Components/Charts/ChartConsumo';
 import { Loader2, AlertCircle } from "lucide-react";
+import { usePredio } from '../context/PredioContext';
 
 export default function Home() {
+    const { selectedPredio, selectedPredioId, loadingPredios } = usePredio();
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchDashboardData = async () => {
+            if (!selectedPredioId) {
+                setLoading(false);
+                return;
+            }
+
             try {
                 setLoading(true);
-                const response = await fetch('/api/dashboard-stats.json');
+                const response = await fetch(`/api/dashboard-stats.json?predioId=${selectedPredioId}`);
                 
                 if (!response.ok) {
                     throw new Error("No se pudieron sincronizar los indicadores de campo.");
@@ -33,7 +40,7 @@ export default function Home() {
         };
 
         fetchDashboardData();
-    }, []);
+    }, [selectedPredioId]);
 
     // --- Pantalla de Carga (Color dinámico: ahora usa status-ok / azul en daltónico) ---
     if (loading) {
@@ -43,6 +50,14 @@ export default function Home() {
                 <p className="text-slate-500 font-bold animate-pulse">Iniciando sistemas de monitoreo...</p>
             </div>
         );
+    }
+
+    if (!selectedPredioId && !loadingPredios) {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50">
+          <p className="text-slate-700 text-lg font-semibold">Selecciona un predio desde el menú superior para ver la información.</p>
+        </div>
+      );
     }
 
     // --- Pantalla de Error (Usa status-error / naranja-bermellón en daltónico) ---

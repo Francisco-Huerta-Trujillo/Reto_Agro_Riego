@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { usePredio } from '../../context/PredioContext';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { Loader2, AlertCircle } from 'lucide-react';
 
@@ -18,12 +19,19 @@ const ChartConsumo = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { selectedPredioId } = usePredio();
+
   useEffect(() => {
     const fetchData = async () => {
+      if (!selectedPredioId) {
+        setData([]);
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
-        // Endpoint del backend
-        const response = await fetch('/api/consumo-agua.json');
+        const response = await fetch(`/api/consumo-agua.json?predioId=${selectedPredioId}`);
         
         if (!response.ok) {
           throw new Error('No se pudo cargar el historial de consumo.');
@@ -45,7 +53,7 @@ const ChartConsumo = () => {
     };
 
     fetchData();
-  }, []);
+  }, [selectedPredioId]);
 
   // Buscamos el valor máximo para resaltar esa barra automáticamente
   const maxValue = data.length > 0 ? Math.max(...data.map(d => d.value)) : 0;

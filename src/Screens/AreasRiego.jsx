@@ -1,8 +1,11 @@
+import React, { useState, useEffect } from 'react';
+import { usePredio } from '../context/PredioContext';
+import { predioService } from '../Services/predioService';
 import { Droplets, MapPin, Clock, TrendingDown, TrendingUp, ChevronRight, ArrowLeft, Calendar, Thermometer, Loader2, AlertCircle } from 'lucide-react';
-import { useState, useEffect } from 'react';
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Area, AreaChart, Line } from 'recharts';
 
 export function AreasRiegoPage() {
+  const { selectedPredioId } = usePredio();
   const [selectedArea, setSelectedArea] = useState(null);
   const [filterEstado, setFilterEstado] = useState('todos');
   const [areas, setAreas] = useState([]);
@@ -11,20 +14,27 @@ export function AreasRiegoPage() {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!selectedPredioId) {
+        setAreas([]);
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
-        const response = await fetch('/api/areas-riego.json');
-        if (!response.ok) throw new Error('al cargar la información de las áreas');
-        const data = await response.json();
+        const data = await predioService.getAreas(selectedPredioId);
+        if (!Array.isArray(data)) {
+          throw new Error('Formato de datos inválido para las áreas de riego.');
+        }
         setAreas(data);
       } catch (err) {
-        setError(err.message);
+        setError(err.message || 'Error al cargar áreas de riego.');
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, []);
+  }, [selectedPredioId]);
 
   const humedadTendencia = [
     { hora: '00:00', humedad: 68, optimo: 65 },
@@ -59,6 +69,14 @@ export function AreasRiegoPage() {
       <div className="flex flex-col items-center justify-center h-96 space-y-4">
         <Loader2 className="animate-spin text-green-600" size={48} />
         <p className="text-slate-500 font-medium">Cargando información...</p>
+      </div>
+    );
+  }
+
+  if (!selectedPredioId) {
+    return (
+      <div className="flex flex-col items-center justify-center h-96 space-y-4">
+        <p className="text-slate-700 font-semibold">Selecciona un predio desde el menú superior para cargar las áreas de riego.</p>
       </div>
     );
   }

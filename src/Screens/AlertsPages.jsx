@@ -1,5 +1,6 @@
 import { AlertTriangle, Droplets, Clock, MapPin, X, CheckCircle, AlertCircle as AlertCircleIcon, Bell, Loader2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { usePredio } from '../context/PredioContext';
 
 export function AlertsPages() {
   const [alerts, setAlerts] = useState([]);
@@ -11,12 +12,19 @@ export function AlertsPages() {
   const [expandedAlert, setExpandedAlert] = useState(null);
 
   // --- Lógica de Carga de Datos ---
+  const { selectedPredioId, loadingPredios } = usePredio();
+
   useEffect(() => {
     const loadData = async () => {
+      if (!selectedPredioId) {
+        setAlerts([]);
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
-        // Cambia esta URL por tu endpoint real del backend
-        const response = await fetch('/api/alerts.json');
+        const response = await fetch(`/api/alerts.json?predioId=${selectedPredioId}`);
         
         if (!response.ok) {
           throw new Error(`Error: No se pudo obtener la información del servidor.`);
@@ -24,7 +32,6 @@ export function AlertsPages() {
         
         const data = await response.json();
         
-        // Validamos que la data sea un array para evitar errores de renderizado
         if (!Array.isArray(data)) {
           throw new Error('Error: El formato de respuesta del servidor no es válido.');
         }
@@ -39,7 +46,7 @@ export function AlertsPages() {
     };
 
     loadData();
-  }, []);
+  }, [selectedPredioId]);
 
   // --- Manejadores de Eventos ---
   const handleResolveAlert = (id) => {
@@ -98,6 +105,14 @@ export function AlertsPages() {
       <div className="flex flex-col items-center justify-center h-64 space-y-4">
         <Loader2 className="animate-spin text-green-600" size={48} />
         <p className="text-slate-500 font-medium">Sincronizando con el servidor...</p>
+      </div>
+    );
+  }
+
+  if (!selectedPredioId) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 space-y-4">
+        <p className="text-slate-700 font-semibold">Selecciona un predio para ver las alertas asociadas.</p>
       </div>
     );
   }
