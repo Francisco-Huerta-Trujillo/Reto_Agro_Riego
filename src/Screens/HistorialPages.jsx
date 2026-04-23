@@ -12,7 +12,7 @@ import {
 // --- COMPONENTES AUXILIARES ---
 function MetricCard({ label, value, highlight }) {
   return (
-    <div className={`${highlight ? 'bg-green-600 text-white' : 'bg-white text-slate-800 border border-slate-200'} p-6 rounded-xl shadow-sm`}>
+    <div className={`${highlight ? 'bg-green-600 text-white' : 'bg-white text-slate-800 border-2 border-[#0EFF0A]'} p-6 rounded-xl shadow-sm`}>
       <p className={`text-sm uppercase tracking-wide font-medium ${highlight ? 'opacity-80' : 'text-slate-500'}`}>{label}</p>
       <p className="text-3xl font-bold mt-1">{value}</p>
     </div>
@@ -55,9 +55,10 @@ export function AreasRiegoPage() {
 
   if (loading) return <div className="flex justify-center p-20"><Loader2 className="animate-spin text-green-600" size={40} /></div>;
   if (error) return (
-    <div className="p-6 bg-red-50 border border-red-200 rounded-xl text-center">
-      <AlertCircle className="mx-auto text-red-500 mb-2" />
-      <p className="text-red-700 font-medium">{error}</p>
+    <div className="m-10 p-12 text-center bg-status-error/10 rounded-3xl border border-slate-300 border-status-error/20 shadow-xl">
+      <AlertCircle className="mx-auto text-status-error mb-4" size={64} />
+      <p className="text-2xl font-bold text-status-error mb-2">Error de Conexión</p>
+      <p className="text-gray-500 max-w-md mx-auto mb-6">Error: {error}</p>
     </div>
   );
 
@@ -157,20 +158,20 @@ return (
       )}
     </div>
 
-    <div className="bg-white p-6 rounded-2xl border-2 border-[#0EFF0A] shadow-sm min-h-87.5 flex flex-col justify-center">
+    <div className="bg-white p-6 rounded-2xl border-2 border-slate-300 shadow-sm min-h-87.5 flex flex-col justify-center">
       {loading ? (
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="animate-spin text-green-600" size={32} />
           <p className="text-slate-400">Procesando estadísticas...</p>
         </div>
       ) : error ? (
-        <div className="text-center space-y-3 h-75 w-full pt-[17%] bg-red-50 border rounded-xl border-red-200">
-          <AlertCircle className="mx-auto text-red-500" size={40} />
-          <p className="text-red-800 text-xl font-bold">Error de Conexión</p>
-          <p className="text-red-500 mb-6">Error: {error}</p>
+        <div className="m-10 p-12 text-center bg-status-error/10 rounded-3xl border border-slate-300 border-status-error/20 shadow-xl">
+          <AlertCircle className="mx-auto text-status-error" size={64} />
+          <p className="text-2xl font-bold text-status-error mb-2">Error de Conexión</p>
+          <p className="text-gray-500 max-w-md mx-auto mb-6">Error: {error}</p>
           <button 
             onClick={() => window.location.reload()} 
-            className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-colors"
+            className="px-8 py-3 bg-status-error text-white rounded-full font-bold hover:brightness-110 transition-all transform hover:scale-105 shadow-lg shadow-status-error/30"
           >
             Reintentar
           </button>

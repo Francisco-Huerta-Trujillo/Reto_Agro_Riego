@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
 // Verifica que estas rutas sean EXACTAS
 import Home from "./Screens/Home";
 import { AreasRiegoPage } from "./Screens/AreasRiego";
@@ -19,6 +20,24 @@ const PrivateLayout = () => {
   return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
+const pageTitles = {
+  '/': 'AgroRiego | Inicio',
+  '/areas': 'AgroRiego | Áreas de Riego',
+  '/historial': 'AgroRiego | Historial',
+  '/alertas': 'AgroRiego | Alertas',
+  '/login': 'AgroRiego | Login',
+};
+
+function TitleManager() {
+  const location = useLocation();
+
+  useEffect(() => {
+    document.title = pageTitles[location.pathname] || 'AgroRiego';
+  }, [location.pathname]);
+
+  return null;
+}
+
 const DashboardLayout = () => {
   return (
     <div className="flex min-h-screen w-full bg-slate-50">
@@ -36,7 +55,8 @@ const DashboardLayout = () => {
 function App() {
   return (
     <ColorBlindProvider>
-      <Router>
+      <Router> 
+        <TitleManager />
         <Routes>
           {/* Ruta Pública */}
           <Route path="/login" element={<Login />} /> 

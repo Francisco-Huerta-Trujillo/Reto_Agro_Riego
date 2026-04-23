@@ -48,7 +48,7 @@ export default function Home() {
     // --- Pantalla de Error (Usa status-error / naranja-bermellón en daltónico) ---
     if (error) {
         return (
-            <div className="m-10 p-12 text-center bg-status-error/10 rounded-3xl border border-status-error/20 shadow-sm">
+            <div className="m-10 p-12 text-center bg-status-error/10 rounded-3xl border border-slate-300 border-status-error/20 shadow-xl">
                 <AlertCircle className="mx-auto text-status-error mb-4" size={64} />
                 <h2 className="text-2xl font-bold text-status-error mb-2">Error de Conexión</h2>
                 <p className="text-gray-500 max-w-md mx-auto mb-6">
@@ -58,7 +58,7 @@ export default function Home() {
                     onClick={() => window.location.reload()}
                     className="px-8 py-3 bg-status-error text-white rounded-full font-bold hover:brightness-110 transition-all transform hover:scale-105 shadow-lg shadow-status-error/30"
                 >
-                    Reintentar Sincronización
+                    Reintentar Conexión
                 </button>
             </div>
         );

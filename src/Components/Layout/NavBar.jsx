@@ -1,12 +1,13 @@
 import { NavLink } from "react-router-dom";
 import { HiOutlineLocationMarker, HiOutlineClock, HiOutlineBell, HiOutlineHome} from "react-icons/hi"
 import './NavBar.css'
+import { LogoRiego } from "../../assets/logo";
 
 function NavBar(){
     return(
         <nav className = "sidebar">
             <div className = "sidebar-logo">
-                <img src = "" alt = "AgroRiego Logo" />
+                    <LogoRiego className="w-16 h-16" />
                 <div className = "logo-text">
                     <h2> AgroRiego </h2>
                     <span> Sistema Inteligente</span>

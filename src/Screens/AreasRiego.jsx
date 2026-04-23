@@ -65,13 +65,13 @@ export function AreasRiegoPage() {
 
   if (error) {
     return (
-      <div className="p-8 text-center bg-red-50 rounded-xl border border-red-200">
-        <AlertCircle className="mx-auto text-red-500 mb-4" size={48} />
-        <p className="text-red-800 text-xl font-bold mb-2">Error de Conexión</p>
-        <p className="text-red-500 mb-6">Error: {error}</p>
+      <div className="m-10 p-12 text-center bg-status-error/10 rounded-3xl border border-slate-300 border-status-error/20 shadow-xl">
+        <AlertCircle className="mx-auto text-status-error mb-4" size={64} />
+        <p className="text-2xl font-bold text-status-error mb-2">Error de Conexión</p>
+        <p className="text-gray-500 max-w-md mx-auto mb-6">Error: {error}</p>
                 <button 
           onClick={() => window.location.reload()}
-          className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
+          className="px-8 py-3 bg-status-error text-white rounded-full font-bold hover:brightness-110 transition-all transform hover:scale-105 shadow-lg shadow-status-error/30"
         >
           Reintentar conexión
         </button>
@@ -96,7 +96,7 @@ export function AreasRiegoPage() {
       <div className="space-y-6 animate-in fade-in duration-300">
         <button
           onClick={() => setSelectedArea(null)}
-          className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#0EFF0A] rounded-xl hover:bg-slate-50 transition-colors"
         >
           <ArrowLeft size={20} />
           <span className="font-semibold">Volver a Áreas de Riego</span>
@@ -175,7 +175,7 @@ export function AreasRiegoPage() {
               key={estado}
               onClick={() => setFilterEstado(estado)}
               className={`px-4 py-2 rounded-lg font-medium transition-colors capitalize ${
-                filterEstado === estado ? 'bg-green-600 text-white' : 'bg-white text-slate-700 border border-slate-300'
+                filterEstado === estado ? 'bg-green-600 text-white' : 'bg-white text-slate-700 border-2 border-[#0EFF0A]'
               }`}
             >
               {estado}
@@ -244,7 +244,7 @@ export function AreasRiegoPage() {
 
 function MetricCard({ label, value, highlight }) {
   return (
-    <div className={`${highlight ? 'bg-green-600 text-white' : 'bg-white text-slate-800 border border-slate-200'} p-6 rounded-xl shadow-sm`}>
+    <div className={`${highlight ? 'bg-green-600 text-white' : 'bg-white text-slate-800 border-2 border-[#0EFF0A]'} p-6 rounded-xl shadow-sm`}>
       <p className={`text-sm uppercase tracking-wide font-medium ${highlight ? 'opacity-80' : 'text-slate-500'}`}>{label}</p>
       <p className="text-3xl font-bold mt-1">{value}</p>
     </div>
@@ -254,7 +254,7 @@ function MetricCard({ label, value, highlight }) {
 function Section({ columnTitle, children }) {
   return (
     <div className="space-y-4">
-      <div className="bg-white rounded-lg py-2 mb-6 border border-slate-200 shadow-sm">
+      <div className="bg-white rounded-lg py-2 mb-6 border-2 border-[#0EFF0A] shadow-sm">
         <h3 className="text-center font-bold text-slate-700 tracking-wider uppercase">{columnTitle}</h3>
       </div>
       {children}

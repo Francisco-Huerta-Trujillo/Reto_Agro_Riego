@@ -104,13 +104,13 @@ export function AlertsPages() {
 
   if (error) {
     return (
-      <div className="p-12 text-center bg-red-50 rounded-xl border border-red-200 shadow-sm mx-auto max-w-2xl mt-10">
-        <AlertCircleIcon className="mx-auto text-red-500 mb-4" size={56} />
-        <h3 className="text-xl font-bold text-red-800 mb-2">Error de Conexión</h3>
-        <p className="text-red-500/80 mb-6">{error}</p>
+      <div className="m-10 p-12 text-center bg-status-error/10 rounded-3xl border border-slate-300 border-status-error/20 shadow-xl">
+        <AlertCircleIcon className="mx-auto text-status-error mb-4" size={64} />
+        <h3 className="text-2xl font-bold text-status-error mb-2">Error de Conexión</h3>
+        <p className="text-gray-500 max-w-md mx-auto mb-6">{error}</p>
         <button 
           onClick={() => window.location.reload()}
-          className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
+          className="px-8 py-3 bg-status-error text-white rounded-full font-bold hover:brightness-110 transition-all transform hover:scale-105 shadow-lg shadow-status-error/30"
         >
           Reintentar conexión
         </button>
