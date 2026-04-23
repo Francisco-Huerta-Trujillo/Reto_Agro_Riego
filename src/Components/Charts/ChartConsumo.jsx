@@ -1,15 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-
-const data = [
-  { day: 'LUN', value: 80 },
-  { day: 'MAR', value: 40 },
-  { day: 'MIÉ', value: 85 },
-  { day: 'JUE', value: 55 },
-  { day: 'VIE', value: 188.40 },
-  { day: 'SÁB', value: 30 },
-  { day: 'DOM', value: 75 },
-];
+import { Loader2, AlertCircle } from 'lucide-react';
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
@@ -23,8 +14,65 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 const ChartConsumo = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        // Endpoint del backend
+        const response = await fetch('/api/consumo-agua.json');
+        
+        if (!response.ok) {
+          throw new Error('No se pudo cargar el historial de consumo.');
+        }
+
+        const jsonData = await response.json();
+        
+        if (!Array.isArray(jsonData)) {
+          throw new Error('Formato de datos inválido.');
+        }
+
+        setData(jsonData);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Buscamos el valor máximo para resaltar esa barra automáticamente
+  const maxValue = data.length > 0 ? Math.max(...data.map(d => d.value)) : 0;
+
+  // --- Estado de Carga ---
+  if (loading) {
+    return (
+      <div className="bg-white p-6 rounded-[2.5rem] border-2 border-gray-100 shadow-sm w-full h-80 flex flex-col items-center justify-center space-y-3">
+        <Loader2 className="animate-spin text-[#4ade80]" size={32} />
+        <p className="text-gray-400 text-sm font-medium">Obteniendo métricas...</p>
+      </div>
+    );
+  }
+
+  // --- Estado de Error (Siguiendo tus especificaciones) ---
+  if (error) {
+    return (
+      <div className="p-8 text-center bg-red-50 rounded-[2.5rem] border border-red-200">
+        <AlertCircle className="mx-auto text-red-500 mb-4" size={40} />
+        <p className="text-red-800 font-bold">Error de Datos</p>
+        <p className="text-red-800/70 text-sm">{error}</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-white p-6 rounded-[2.5rem] border-2 border-[#4ade80] shadow-sm w-full font-sans">
+    <div className="bg-white p-6 rounded-[2.5rem] border-2 border-[#4ade80] shadow-sm w-full font-sans animate-in fade-in duration-500">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-[#1a1c3d]">Consumo de Agua</h2>
         <button className="bg-gray-50 text-gray-400 px-6 py-1.5 rounded-full text-sm font-medium border border-gray-100">
@@ -55,7 +103,8 @@ const ChartConsumo = () => {
               {data.map((entry, index) => (
                 <Cell 
                   key={`cell-${index}`} 
-                  fill={entry.day === 'VIE' ? '#3b82f6' : '#bfdbfe'} 
+                  // Resalta en azul oscuro la barra con el valor más alto, las demás en azul claro
+                  fill={entry.value === maxValue ? '#3b82f6' : '#bfdbfe'} 
                 />
               ))}
             </Bar>

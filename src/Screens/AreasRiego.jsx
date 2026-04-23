@@ -14,7 +14,7 @@ export function AreasRiegoPage() {
       try {
         setLoading(true);
         const response = await fetch('/api/areas-riego.json');
-        if (!response.ok) throw new Error('Error al cargar la información de las áreas');
+        if (!response.ok) throw new Error('al cargar la información de las áreas');
         const data = await response.json();
         setAreas(data);
       } catch (err) {
@@ -67,7 +67,14 @@ export function AreasRiegoPage() {
     return (
       <div className="p-8 text-center bg-red-50 rounded-xl border border-red-200">
         <AlertCircle className="mx-auto text-red-500 mb-4" size={48} />
-        <p className="text-red-800 font-bold">Error: {error}</p>
+        <p className="text-red-800 text-xl font-bold mb-2">Error de Conexión</p>
+        <p className="text-red-500 mb-6">Error: {error}</p>
+                <button 
+          onClick={() => window.location.reload()}
+          className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
+        >
+          Reintentar conexión
+        </button>
       </div>
     );
   }

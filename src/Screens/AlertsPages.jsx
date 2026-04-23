@@ -10,13 +10,25 @@ export function AlertsPages() {
   const [filterResolved, setFilterResolved] = useState(false);
   const [expandedAlert, setExpandedAlert] = useState(null);
 
+  // --- Lógica de Carga de Datos ---
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
+        // Cambia esta URL por tu endpoint real del backend
         const response = await fetch('/api/alerts.json');
-        if (!response.ok) throw new Error('Error al conectar con el servidor');
+        
+        if (!response.ok) {
+          throw new Error(`Error: No se pudo obtener la información del servidor.`);
+        }
+        
         const data = await response.json();
+        
+        // Validamos que la data sea un array para evitar errores de renderizado
+        if (!Array.isArray(data)) {
+          throw new Error('Error: El formato de respuesta del servidor no es válido.');
+        }
+
         setAlerts(data);
         setError(null);
       } catch (err) {
@@ -29,6 +41,7 @@ export function AlertsPages() {
     loadData();
   }, []);
 
+  // --- Manejadores de Eventos ---
   const handleResolveAlert = (id) => {
     setAlerts(alerts.map(alert =>
       alert.id === id ? { ...alert, resolved: true } : alert
@@ -45,6 +58,7 @@ export function AlertsPages() {
     }
   };
 
+  // --- Helpers de Configuración ---
   const getAlertConfig = (severity) => {
     const configs = {
       critical: { bg: 'bg-red-50', border: 'border-red-300', icon: 'text-red-600', iconBg: 'bg-red-100', title: 'text-red-800', badge: 'bg-red-500' },
@@ -65,6 +79,7 @@ export function AlertsPages() {
     return icons[type] || AlertTriangle;
   };
 
+  // --- Filtrado y Estadísticas ---
   const alertsFiltered = alerts
     .filter(a => !filterResolved || !a.resolved)
     .filter(a => filterSeverity === 'todas' || a.severity === filterSeverity);
@@ -76,30 +91,40 @@ export function AlertsPages() {
     resolved: alerts.filter(a => a.resolved).length
   };
 
+  // --- RENDERIZADO DE ESTADOS (Carga y Error) ---
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-64 space-y-4">
         <Loader2 className="animate-spin text-green-600" size={48} />
-        <p className="text-slate-500 font-medium">Cargando información...</p>
+        <p className="text-slate-500 font-medium">Sincronizando con el servidor...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="p-8 text-center bg-red-50 rounded-xl border border-red-200">
-        <AlertCircleIcon className="mx-auto text-red-500 mb-4" size={48} />
-        <p className="text-red-800 font-bold">Error: {error}</p>
+      <div className="p-12 text-center bg-red-50 rounded-xl border border-red-200 shadow-sm mx-auto max-w-2xl mt-10">
+        <AlertCircleIcon className="mx-auto text-red-500 mb-4" size={56} />
+        <h3 className="text-xl font-bold text-red-800 mb-2">Error de Conexión</h3>
+        <p className="text-red-500/80 mb-6">{error}</p>
+        <button 
+          onClick={() => window.location.reload()}
+          className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
+        >
+          Reintentar conexión
+        </button>
       </div>
     );
   }
 
+  // --- RENDERIZADO PRINCIPAL ---
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-500">
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-bold text-slate-800">Centro de Alertas</h2>
-          <p className="text-slate-500 mt-1">{alerts.length} registros encontrados</p>
+          <p className="text-slate-500 mt-1">{alerts.length} registros totales en sistema</p>
         </div>
         {alerts.filter(a => !a.resolved).length > 0 && (
           <button
@@ -119,6 +144,7 @@ export function AlertsPages() {
         <StatCard color="from-green-500 to-green-600" icon={<CheckCircle />} label="Resueltas" value={stats.resolved} />
       </div>
 
+      {/* Barra de Filtros */}
       <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex flex-col lg:flex-row gap-4 items-center justify-between">
         <div className="flex flex-wrap gap-2">
           {['todas', 'critical', 'warning', 'info'].map((sev) => (
@@ -129,11 +155,11 @@ export function AlertsPages() {
                 filterSeverity === sev ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
-              {sev === 'critical' ? 'Críticas' : sev}
+              {sev === 'critical' ? 'Críticas' : sev === 'warning' ? 'Advertencias' : sev === 'info' ? 'Info' : 'Todas'}
             </button>
           ))}
         </div>
-        <label className="flex items-center gap-2 cursor-pointer bg-slate-50 px-3 py-2 rounded-lg border">
+        <label className="flex items-center gap-2 cursor-pointer bg-slate-50 px-3 py-2 rounded-lg border hover:bg-slate-100 transition-colors">
           <input
             type="checkbox"
             checked={!filterResolved}
@@ -144,6 +170,7 @@ export function AlertsPages() {
         </label>
       </div>
 
+      {/* Lista de Alertas */}
       <div className="space-y-4">
         {alertsFiltered.length === 0 ? (
           <EmptyState />
@@ -166,6 +193,8 @@ export function AlertsPages() {
   );
 }
 
+// --- Subcomponentes ---
+
 function StatCard({ color, icon, label, value }) {
   return (
     <div className={`bg-linear-to-br ${color} p-5 rounded-xl text-white shadow-md`}>
@@ -180,7 +209,7 @@ function StatCard({ color, icon, label, value }) {
 
 function AlertItem({ alert, config, Icon, onResolve, onDelete, isExpanded, onExpand }) {
   return (
-    <div className={`bg-white rounded-xl border-2 ${config.border} shadow-sm overflow-hidden transition-all ${alert.resolved ? 'opacity-50' : ''}`}>
+    <div className={`bg-white rounded-xl border-2 ${config.border} shadow-sm overflow-hidden transition-all ${alert.resolved ? 'opacity-50 grayscale-[0.5]' : ''}`}>
       <div className={`p-5 ${config.bg}`}>
         <div className="flex gap-4">
           <div className={`p-3 h-fit ${config.iconBg} rounded-lg`}>
@@ -199,24 +228,33 @@ function AlertItem({ alert, config, Icon, onResolve, onDelete, isExpanded, onExp
             <div className="flex flex-wrap gap-4 mt-3 text-xs font-semibold text-slate-500">
               <span className="flex items-center gap-1"><MapPin size={14}/> {alert.location}</span>
               <span className="flex items-center gap-1"><Clock size={14}/> {alert.time}</span>
-              <span className="bg-white/50 px-2 py-0.5 rounded border">📍 {alert.predio}</span>
+              <span className="bg-white/50 px-2 py-0.5 rounded border border-slate-200">📍 {alert.predio}</span>
             </div>
+            
             {isExpanded && alert.actions && (
-              <div className="mt-4 bg-white/60 p-3 rounded-lg border border-dashed border-slate-300">
+              <div className="mt-4 bg-white/60 p-3 rounded-lg border border-dashed border-slate-300 animate-in slide-in-from-top-2 duration-300">
+                <p className="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Acciones sugeridas:</p>
                 {alert.actions.map((act, i) => (
                   <div key={i} className="flex gap-2 text-sm text-slate-700 mb-1">
-                    <span className="text-green-600">→</span> {act}
+                    <span className="text-green-600 font-bold">→</span> {act}
                   </div>
                 ))}
               </div>
             )}
+            
             {!alert.resolved && (
               <div className="flex gap-2 mt-4">
-                <button onClick={() => onResolve(alert.id)} className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-green-700 transition-colors">
-                  Resolver
+                <button 
+                  onClick={() => onResolve(alert.id)} 
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-green-700 transition-colors shadow-sm"
+                >
+                  Marcar como resuelta
                 </button>
-                <button onClick={onExpand} className="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-bold hover:bg-slate-300">
-                  {isExpanded ? 'Cerrar' : 'Acciones'}
+                <button 
+                  onClick={onExpand} 
+                  className="bg-white text-slate-700 border border-slate-200 px-4 py-2 rounded-lg text-sm font-bold hover:bg-slate-50 transition-colors"
+                >
+                  {isExpanded ? 'Ocultar detalles' : 'Ver acciones'}
                 </button>
               </div>
             )}
@@ -230,8 +268,9 @@ function AlertItem({ alert, config, Icon, onResolve, onDelete, isExpanded, onExp
 function EmptyState() {
   return (
     <div className="bg-white rounded-xl p-12 text-center border-2 border-dashed border-slate-200">
-      <CheckCircle className="mx-auto text-green-200 mb-4" size={64} />
-      <h3 className="text-xl font-bold text-slate-800">Sin Alertas</h3>
+      <CheckCircle className="mx-auto text-green-100 mb-4" size={64} />
+      <h3 className="text-xl font-bold text-slate-800">Todo bajo control</h3>
+      <p className="text-slate-500">No hay alertas activas que coincidan con los filtros.</p>
     </div>
   );
 }

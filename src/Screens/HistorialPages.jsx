@@ -142,56 +142,56 @@ export function HistorialPage() {
     fetchConsumo();
   }, []);
 
-  return (
-    <div className="space-y-6 pt-10 border-t border-slate-200 mt-10">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-slate-800">Consumo Semanal</h2>
-        <button className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
+return (
+  <div className="space-y-6 pt-10 border-t border-slate-200 mt-10">
+    <div className="flex justify-between items-center">
+      <h2 className="text-2xl font-bold text-slate-800">Consumo Semanal</h2>
+      
+      {/* Renderizado condicional: 
+          Solo mostramos el botón si NO está cargando y NO hay error 
+      */}
+      {!loading && !error && (
+        <button className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors animate-in fade-in duration-300">
           <Download size={18}/> Exportar Reporte
         </button>
-      </div>
-
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm min-h-87.5 flex flex-col justify-center">
-        {loading ? (
-          <div className="flex flex-col items-center gap-3">
-            <Loader2 className="animate-spin text-green-600 rounded-lg " size={32} />
-            <p className="text-slate-400">Procesando estadísticas...</p>
-          </div>
-        ) : error ? (
-          <div className="text-center space-y-3 h-75 w-full  pt-[17%] bg-red-50 border rounded-xl border-red-200">
-            <AlertCircle className="mx-auto text-red-500" size={40} />
-            <p className="text-red-800 font-medium">{error}</p>
-            <button onClick={() => window.location.reload()} className="text-sm bg-green-600  text-white rounded-lg ">Reintentar</button>
-          </div>
-        ) : (
-          <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={dataConsumo}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="dia" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
-                <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
-                <Tooltip 
-                  cursor={{fill: '#f8fafc'}}
-                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-                />
-                <Bar dataKey="consumo" fill="#3b82f6" radius={[6, 6, 0, 0]} barSize={40} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        )}
-      </div>
+      )}
     </div>
-  );
-}
 
-// --- EXPORTACIÓN PRINCIPAL ---
-export default function Dashboard() {
-  return (
-    <div className="p-4 md:p-8 bg-slate-50 min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-12">
-        <AreasRiegoPage />
-        <HistorialPage />
-      </div>
+    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm min-h-87.5 flex flex-col justify-center">
+      {loading ? (
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="animate-spin text-green-600" size={32} />
+          <p className="text-slate-400">Procesando estadísticas...</p>
+        </div>
+      ) : error ? (
+        <div className="text-center space-y-3 h-75 w-full pt-[17%] bg-red-50 border rounded-xl border-red-200">
+          <AlertCircle className="mx-auto text-red-500" size={40} />
+          <p className="text-red-800 text-xl font-bold">Error de Conexión</p>
+          <p className="text-red-500 mb-6">Error: {error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-colors"
+          >
+            Reintentar
+          </button>
+        </div>
+      ) : (
+        <div className="h-64 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={dataConsumo}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+              <XAxis dataKey="dia" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
+              <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
+              <Tooltip 
+                cursor={{fill: '#f8fafc'}}
+                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+              />
+              <Bar dataKey="consumo" fill="#3b82f6" radius={[6, 6, 0, 0]} barSize={40} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
     </div>
-  );
+  </div>
+);
 }
