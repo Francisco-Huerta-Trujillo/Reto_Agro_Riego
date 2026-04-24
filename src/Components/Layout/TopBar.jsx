@@ -27,6 +27,9 @@ function TopBar() {
       setPredio(selectedId);
     };
 
+    const irAlertas = () => {
+        navigate('/alertas');
+    }
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -81,7 +84,8 @@ function TopBar() {
         <HiOutlineEye />
     </button>
 
-    <button className="notif-btn bg-gray-50 border border-gray-200 p-2 rounded-full text-xl text-gray-500 hover:bg-gray-100">
+    <button className="notif-btn bg-gray-50 border border-gray-200 p-2 rounded-full text-xl text-gray-500 hover:bg-gray-100"
+    onClick={irAlertas}>
         <HiOutlineBell />
     </button>
 </div>
