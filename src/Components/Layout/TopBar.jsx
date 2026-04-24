@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { 
     HiOutlineLocationMarker, 
     HiOutlineBell, 
     HiCheckCircle, 
     HiOutlineLogout, 
-    HiOutlineEye // Nuevo icono para accesibilidad/daltonismo
+    HiOutlineEye, 
+    HiOutlineChevronDown,
+    HiOutlineChevronUp
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { useColorBlind } from "../../context/ColorBlindContext";
@@ -14,17 +16,45 @@ import './TopBar.css';
 function TopBar() {
     const navigate = useNavigate();
     const { isColorBlindMode, toggleColorBlindMode } = useColorBlind();
-    const { predios, selectedPredioId, setPredio, loadingPredios, predioError } = usePredio();
+    const { predios, selectedPredioId, selectedPredio, setPredio, loadingPredios, predioError } = usePredio();
     const [localSelected, setLocalSelected] = useState(selectedPredioId);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
     useEffect(() => {
       setLocalSelected(selectedPredioId);
     }, [selectedPredioId]);
 
-    const handlePredioChange = (event) => {
-      const selectedId = event.target.value;
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+          setIsDropdownOpen(false);
+        }
+      };
+
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const selectedLabel = selectedPredio
+      ? `Predio ${String(selectedPredio.id_predio).substring(0, 6).toUpperCase()} · ${selectedPredio.coordenadas || 'Coordenadas desconocidas'}`
+      : loadingPredios
+      ? 'Cargando predios...'
+      : predioError
+      ? 'Error al cargar predios'
+      : 'Selecciona un predio';
+
+    const dropdownDisabled = loadingPredios || predios.length === 0 || Boolean(predioError);
+
+    const handlePredioToggle = () => {
+      if (dropdownDisabled) return;
+      setIsDropdownOpen((prev) => !prev);
+    };
+
+    const handlePredioSelect = (selectedId) => {
       setLocalSelected(selectedId);
       setPredio(selectedId);
+      setIsDropdownOpen(false);
     };
 
     const irAlertas = () => {
@@ -39,26 +69,46 @@ function TopBar() {
     return (
         <header className="topbar">
             <div className="topbar-left">
-                <div className="selector-predio">
+                <div className="selector-predio custom-dropdown" ref={dropdownRef}>
                     <HiOutlineLocationMarker className="icon-geo" />
                     <div className="selector-text">
-                        <span className="label"> PREDIO ACTIVO </span>
-                        <select
-                            className="predio-dropdown"
-                            value={localSelected}
-                            onChange={handlePredioChange}
-                            disabled={loadingPredios || predios.length === 0}
+                        <span className="label">PREDIO ACTIVO</span>
+                        <button
+                            type="button"
+                            className={`predio-dropdown-button ${dropdownDisabled ? 'disabled' : ''}`}
+                            onClick={handlePredioToggle}
+                            aria-haspopup="listbox"
+                            aria-expanded={isDropdownOpen}
+                            disabled={dropdownDisabled}
                         >
-                            {loadingPredios && <option value="">Cargando predios...</option>}
-                            {!loadingPredios && predioError && <option value="">Error al cargar</option>}
-                            {!loadingPredios && !predioError && predios.length === 0 && <option value="">No hay predios</option>}
-                            {!loadingPredios && !predioError && predios.map((predio) => (
-                                <option key={predio.id_predio} value={predio.id_predio}>
-                                    {`Predio en Coordenadas: ${predio.coordenadas || "Desconocidas"}`}
-                                </option>
-                            ))}
-                        </select>
+                            <span className="predio-value">{selectedLabel}</span>
+                            <span className="dropdown-control">
+                                {isDropdownOpen ? <HiOutlineChevronUp /> : <HiOutlineChevronDown />}
+                            </span>
+                        </button>
                     </div>
+
+                    {isDropdownOpen && (
+                        <div className="dropdown-options" role="listbox" aria-activedescendant={localSelected}>
+                            {loadingPredios && <div className="dropdown-placeholder">Cargando predios...</div>}
+                            {!loadingPredios && predioError && <div className="dropdown-placeholder text-error">Error al cargar predios</div>}
+                            {!loadingPredios && !predioError && predios.length === 0 && <div className="dropdown-placeholder">No hay predios disponibles</div>}
+                            {!loadingPredios && !predioError && predios.map((predio) => (
+                                <button
+                                    key={predio.id_predio}
+                                    type="button"
+                                    onClick={() => handlePredioSelect(predio.id_predio)}
+                                    className={`dropdown-option ${String(localSelected) === String(predio.id_predio) ? 'selected' : ''}`}
+                                >
+                                    <div className="option-info">
+                                        <span className="option-title">{`Predio ${String(predio.id_predio).substring(0, 6).toUpperCase()}`}</span>
+                                        <span className="option-subtitle">{predio.coordenadas || 'Coordenadas desconocidas'}</span>
+                                    </div>
+                                    <span className="option-meta">{String(predio.id_predio).substring(0, 8)}...</span>
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 
