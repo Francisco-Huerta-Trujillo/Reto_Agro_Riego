@@ -1,55 +1,75 @@
-import React, { useState } from 'react';
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import './InteractiveMap.css'; // Asegúrate de crear este archivo para estilos adicionales
-import ImagenMapa from '../../assets/ImagenMapa.png';
+import React, { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 
 const InteractiveMap = () => {
-  const [selectedMarker, setSelectedMarker] = useState(null);
+  const [predios, setPredios] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const markers = [
-    { id: 1, x: 20, y: 30, type: 'green', details: { temperature: '26.1°C', humidity: '79%', status: 'Normal' } },
-    { id: 2, x: 50, y: 50, type: 'yellow', details: { temperature: '28.3°C', humidity: '65%', status: 'Warning' } },
-    { id: 3, x: 70, y: 80, type: 'red', details: { temperature: '30.5°C', humidity: '50%', status: 'Alert' } },
-  ];
+  useEffect(() => {
+    // Llamada a tu API de FastAPI
+    fetch('http://localhost:8000/api/predios') 
+      .then(res => res.json())
+      .then(data => {
+        setPredios(data);
+        setLoading(false);
+      })
+      .catch(err => console.error("Error:", err));
+  }, []);
 
-  const handleMarkerClick = (marker) => {
-    setSelectedMarker(marker);
-  };
-
-  const handleClosePopup = () => {
-    setSelectedMarker(null);
-  };
+  if (loading) return <p>Cargando mapa...</p>;
 
   return (
-    <div className="interactive-map">
-      <TransformWrapper>
-        <TransformComponent>
-          <div className="map-container">
-            <img src={ImagenMapa} alt="Mapa de la granja" className="map-image" />
-            {markers.map((marker) => (
-              <div
-                key={marker.id}
-                className={`marker marker-${marker.type}`}
-                style={{ left: `${marker.x}%`, top: `${marker.y}%` }}
-                onClick={() => handleMarkerClick(marker)}
-              />
-            ))}
-          </div>
-        </TransformComponent>
-      </TransformWrapper>
+    <div style={{ height: '600px', width: '100%', borderRadius: '15px', overflow: 'hidden' }}>
+      <MapContainer 
+        center={[28.6850292, -106.0765387]} // Centro inicial en el Tec
+        zoom={18} 
+        style={{ height: '100%', width: '100%' }}
+      >
+        <TileLayer
+          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+          attribution='&copy; Esri &mdash; Source: Esri'
+        />
 
-      {selectedMarker && (
-        <div className="popup" style={{ left: `${selectedMarker.x}%`, top: `${selectedMarker.y}%` }}>
-          <div className="popup-content">
-            <p>Temperatura: {selectedMarker.details.temperature}</p>
-            <p>Humedad: {selectedMarker.details.humidity}</p>
-            <p>
-              Estado: <span className={`status-${selectedMarker.type}`}>{selectedMarker.details.status}</span>
-            </p>
-            <button className="close-popup" onClick={handleClosePopup}>Cerrar</button>
-          </div>
-        </div>
-      )}
+        {predios.map((predio) => (
+          <React.Fragment key={predio.id_predio}>
+            {/* 1. Marcador del Predio (opcional, como referencia) */}
+            <CircleMarker 
+              center={[predio.lat, predio.lng]} 
+              radius={5} 
+              pathOptions={{ color: 'white', fillColor: 'white' }} 
+            >
+              <Popup>📍 Centro del Predio: {predio.id_predio}</Popup>
+            </CircleMarker>
+
+            {/* 2. MAPEADO ANIDADO: Dibujamos las áreas de este predio */}
+            {predio.areas.map((area) => (
+              <CircleMarker
+                key={area.id_areariego}
+                center={[area.latitud, area.longitud]} // Usando tus nombres de AreaSchema
+                radius={12}
+                pathOptions={{ 
+                  fillColor: '#3498db', 
+                  color: 'white', 
+                  weight: 2, 
+                  fillOpacity: 0.8 
+                }}
+              >
+                <Popup>
+                  <div style={{ textAlign: 'center' }}>
+                    <strong>Área de Riego</strong><br />
+                    <span>Cultivo: {area.tipo_cultivo || 'No especificado'}</span><br />
+                    <hr />
+                    <button onClick={() => alert(`Cargando datos de area: ${area.id_areariego}`)}>
+                      Ver Humedad
+                    </button>
+                  </div>
+                </Popup>
+              </CircleMarker>
+            ))}
+          </React.Fragment>
+        ))}
+      </MapContainer>
     </div>
   );
 };
