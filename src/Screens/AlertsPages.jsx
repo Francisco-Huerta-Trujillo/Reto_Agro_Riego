@@ -16,7 +16,7 @@ export function AlertsPages() {
 
   useEffect(() => {
     const loadData = async () => {
-      if (!selectedPredioId) {
+      if (!selectedPredioId || selectedPredioId === 'undefined') {
         setAlerts([]);
         setLoading(false);
         return;
@@ -24,7 +24,7 @@ export function AlertsPages() {
 
       try {
         setLoading(true);
-        const response = await fetch(`/api/alerts.json?predioId=${selectedPredioId}`);
+        const response = await fetch(`http://localhost:8000/api/v1/predios/${selectedPredioId}/alerts`);
         
         if (!response.ok) {
           throw new Error(`Error: No se pudo obtener la información del servidor.`);
@@ -89,12 +89,12 @@ export function AlertsPages() {
   // --- Filtrado y Estadísticas ---
   const alertsFiltered = alerts
     .filter(a => !filterResolved || !a.resolved)
-    .filter(a => filterSeverity === 'todas' || a.severity === filterSeverity);
+    .filter(a => filterSeverity === 'todas' || a.severidad === filterSeverity);
 
   const stats = {
-    critical: alerts.filter(a => !a.resolved && a.severity === 'critical').length,
-    warning: alerts.filter(a => !a.resolved && a.severity === 'warning').length,
-    info: alerts.filter(a => !a.resolved && a.severity === 'info').length,
+    critical: alerts.filter(a => !a.resolved && a.severidad === 'critical').length,
+    warning: alerts.filter(a => !a.resolved && a.severidad === 'warning').length,
+    info: alerts.filter(a => !a.resolved && a.severidad === 'info').length,
     resolved: alerts.filter(a => a.resolved).length
   };
 
@@ -232,17 +232,17 @@ function AlertItem({ alert, config, Icon, onResolve, onDelete, isExpanded, onExp
           </div>
           <div className="flex-1">
             <div className="flex justify-between">
-              <h4 className={`font-bold text-lg ${config.title}`}>{alert.title}</h4>
+              <h4 className={`font-bold text-lg ${config.title}`}>{alert.tipo_de_alerta}</h4>
               {!alert.resolved && (
                 <button onClick={() => onDelete(alert.id)} className="text-slate-400 hover:text-red-500 transition-colors">
                   <X size={20} />
                 </button>
               )}
             </div>
-            <p className="text-slate-600 text-sm mt-1">{alert.description}</p>
+            <p className="text-slate-600 text-sm mt-1">{alert.mensaje_de_alerta}</p>
             <div className="flex flex-wrap gap-4 mt-3 text-xs font-semibold text-slate-500">
               <span className="flex items-center gap-1"><MapPin size={14}/> {alert.location}</span>
-              <span className="flex items-center gap-1"><Clock size={14}/> {alert.time}</span>
+              <span className="flex items-center gap-1"><Clock size={14}/> {alert.fecha ? new Date(alert.fecha).toLocaleString() : 'Reciente'}</span>
               <span className="bg-white/50 px-2 py-0.5 rounded border border-slate-200">📍 {alert.predio}</span>
             </div>
             

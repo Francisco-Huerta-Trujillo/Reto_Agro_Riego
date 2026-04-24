@@ -11,15 +11,15 @@ const ChartHumedad = () => {
 
   useEffect(() => {
     const fetchHumedad = async () => {
-      if (!selectedPredioId) {
+      if (!selectedPredioId || selectedPredioId === 'undefined') {
         setData([]);
         setLoading(false);
         return;
-      }
+    }
 
       try {
         setLoading(true);
-        const response = await fetch(`/api/humedad-suelo.json?predioId=${selectedPredioId}`);
+        const response = await fetch(`http://localhost:8000/api/v1/predios/${selectedPredioId}/chart-humedad`);
         
         if (!response.ok) {
           throw new Error('No se pudo establecer comunicación con los sensores.');

@@ -10,33 +10,35 @@ const AlertBanner = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchAlerts = async () => {
-      if (!selectedPredioId) {
-        setAlerts([]);
-        setLoading(false);
-        return;
-      }
+        const fetchAlerts = async () => {
+          // Candado contra el undefined
+          if (!selectedPredioId || selectedPredioId === 'undefined') {
+              setAlerts([]);
+              setLoading(false);
+              return;
+          }
 
-      try {
-        setLoading(true);
-        const response = await fetch(`/api/active-alerts.json?predioId=${selectedPredioId}`);
-        
-        if (!response.ok) {
-          throw new Error("No se pudo sincronizar con el panel de control.");
-        }
+          try {
+              setLoading(true);
+              // La nueva URL de tu API
+              const response = await fetch(`http://localhost:8000/api/v1/predios/${selectedPredioId}/alerts`);
+              
+              if (!response.ok) {
+                  throw new Error('No se pudo sincronizar con el panel de control.');
+              }
 
-        const data = await response.json();
-        setAlerts(Array.isArray(data) ? data : []);
-        setError(null);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+              const data = await response.json();
+              setAlerts(data);
+              setError(null);
+          } catch (err) {
+              setError(err.message);
+          } finally {
+              setLoading(false);
+          }
+      };
 
-    fetchAlerts();
-  }, [selectedPredioId]);
+      fetchAlerts();
+    }, [selectedPredioId]);
 
   // --- Estado de Carga ---
   if (loading) {
@@ -60,7 +62,7 @@ const AlertBanner = () => {
   }
 
   // Calculamos cuántas alertas críticas hay para el contador superior
-  const criticalCount = alerts.filter(a => a.severity?.toUpperCase() === 'CRÍTICO' || a.severity?.toUpperCase() === 'CRITICAL').length;
+  const criticalCount = alerts.filter(a => a.severidad?.toUpperCase() === 'CRÍTICO' || a.severidad?.toUpperCase() === 'CRITICAL').length;
 
   return (
     <div className="mt-6 rounded-xl overflow-hidden border border-gray-200 shadow-md">
@@ -81,25 +83,30 @@ const AlertBanner = () => {
       {alerts.length > 0 ? (
         <div className="divide-y divide-gray-100">
           {alerts.map((alert, index) => (
-            <div key={alert.id || index} className="bg-[#FCF3F2] p-6 flex items-start gap-4 transition-colors hover:bg-[#f8e8e6]">
+            // Cambiamos alert.id por alert.id_alerta si ese es el nombre en tu BD
+            <div key={alert.id_alerta || index} className="bg-[#FCF3F2] p-6 flex items-start gap-4 transition-colors hover:bg-[#f8e8e6]">
               <HiExclamationCircle className="text-[#FF2F2F] text-2xl mt-1 shrink-0" />
               <div>
                 <div className="flex items-center gap-3">
                   <h3 className="text-[#FF2F2F] font-bold text-lg">
-                    {alert.title}
+                    {/* Cambiamos title por titulo */}
+                    {alert.tipo_de_alerta}
                   </h3>
-                  {alert.severity && (
+                  {alert.severidad && (
                     <span className="bg-[#FF2F2F] text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase">
-                      {alert.severity}
+                      {/* Cambiamos severity por severidad */}
+                      {alert.severidad || "CRÍTICO"}
                     </span>
                   )}
                 </div>
                 <p className="text-gray-500 text-sm mt-1 italic">
-                  {alert.description}
+                  {/* Cambiamos description por descripcion */}
+                  {alert.mensaje_de_alerta}
                 </p>
-                {alert.timestamp && (
+                {alert.fecha && (
                   <p className="text-gray-400 text-[10px] mt-2 uppercase tracking-widest">
-                    Reportado: {alert.timestamp}
+                    {/* Cambiamos timestamp por fecha */}
+                    Reportado: {new Date(alert.fecha).toLocaleString()}
                   </p>
                 )}
               </div>

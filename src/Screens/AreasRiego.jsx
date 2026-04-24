@@ -14,25 +14,69 @@ export function AreasRiegoPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!selectedPredioId) {
-        setAreas([]);
-        setLoading(false);
-        return;
+      if (!selectedPredioId || selectedPredioId === 'undefined') {
+        setAreas([]); setLoading(false); return;
       }
 
       try {
         setLoading(true);
-        const data = await predioService.getAreas(selectedPredioId);
-        if (!Array.isArray(data)) {
-          throw new Error('Formato de datos inválido para las áreas de riego.');
-        }
-        setAreas(data);
+        // 1. Obtenemos la lista de áreas del predio
+        const areasData = await predioService.getAreas(selectedPredioId);
+        if (!Array.isArray(areasData)) throw new Error('Formato de datos inválido.');
+
+        // 2. Hacemos un ciclo para buscar la última medición REAL de cada área
+        const areasConMediciones = await Promise.all(
+          areasData.map(async (area, index) => {
+            try {
+              // Llamamos al endpoint que ya tienes en backend para los sensores del área
+              const res = await fetch(`http://localhost:8000/api/v1/areas/${area.id_areariego}/sensors`);
+              const mediciones = await res.json();
+
+              // Tomamos la última medición (la más reciente) o un objeto vacío si no hay
+              const ultima = mediciones.length > 0 ? mediciones[mediciones.length - 1] : {};
+
+              return {
+                ...area,
+                id: area.id_areariego,
+                name: `Parcela ${String(area.id_areariego).substring(0, 6).toUpperCase()}`,
+                estadoRiego: 'activo',
+
+                humedad: ultima.humedad_suelo || 0,
+                potencialHidrico: ultima.potencial_hidrico || 0,
+                temperaturaSuelo: ultima.temperatura_suelo || 0,
+                flujoAgua: ultima.flujo_consumo_agua || 0,
+                consumoDiario: ultima.flujo_consumo_agua || 0, 
+                temperaturaAmbiental: ultima.temperatura_ambiente || 0,
+                humedadRelativa: ultima.humedad_relativa_ambiente || 0,
+                evapotranspiracion: ultima.evapotranspiracion || 0,
+                consumoSemanal: (ultima.flujo_consumo_agua || 0) * 7, // Estimación basada en el flujo
+                electroconductividad: ultima.electroconductividad || 0,
+                velocidadViento: ultima.velocidad_viento || 0,
+                radiacionSolar: ultima.radiacion_solar || 0,
+
+                // 🟡 DATOS ESTÉTICOS (Porque aún no existen columnas para esto en la BD)
+                area: index % 2 === 0 ? 5.2 : 3.8, // Hectáreas
+                cultivo: area.tipo_cultivo || "Sin Asignar",
+                tipoCultivo: 'Árbol Frutal',
+                proximoRiego: 'Mañana, 06:00 AM',
+                eficiencia: 88,
+              };
+            } catch (err) {
+              console.error(`Error cargando sensores del área ${area.id_areariego}`, err);
+              // Si falla, devolvemos el área con los datos en cero para no romper la UI
+              return { ...area, id: area.id_areariego, name: `Parcela ${String(area.id_areariego).substring(0,6)}` };
+            }
+          })
+        );
+
+        setAreas(areasConMediciones);
       } catch (err) {
         setError(err.message || 'Error al cargar áreas de riego.');
       } finally {
         setLoading(false);
       }
     };
+    
     fetchData();
   }, [selectedPredioId]);
 
@@ -161,17 +205,19 @@ export function AreasRiegoPage() {
           <Section columnTitle="SUELO">
             <DataCard label="Humedad de suelo" value={`${selectedArea.humedad}%`} />
             <DataCard label="Potencial Hídrico" value={`${selectedArea.potencialHidrico} kPa`} />
+            <DataCard label="Electroconductividad" value={`${selectedArea.electroconductividad} dS/m`} />
             <DataCard label="Temperatura Suelo" value={`${selectedArea.temperaturaSuelo?.toFixed(1)} °C`} />
           </Section>
 
           <Section columnTitle="RIEGO">
-            <DataCard label="Flujo Actual" value={`${selectedArea.flujoAgua} L/min`} />
-            <DataCard label="Consumo Semanal" value={`${selectedArea.consumoSemanal} m³`} />
+            <DataCard label="Flujo / Consumo Semanal" value={`${selectedArea.consumoSemanal} m³`} />
           </Section>
 
           <Section columnTitle="AMBIENTAL">
             <DataCard label="Temperatura" value={`${selectedArea.temperaturaAmbiental} °C`} />
             <DataCard label="Humedad Relativa" value={`${selectedArea.humedadRelativa}%`} />
+            <DataCard label="Velocidad del viento" value={`${selectedArea.velocidadViento} km/h`} />
+            <DataCard label="Radiación Solar" value={`${selectedArea.radiacionSolar} W/m²`} />
             <DataCard label="Evapotranspiración" value={`${selectedArea.evapotranspiracion} mm/día`} />
           </Section>
         </div>

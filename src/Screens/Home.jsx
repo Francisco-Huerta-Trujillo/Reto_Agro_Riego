@@ -16,14 +16,14 @@ export default function Home() {
 
     useEffect(() => {
         const fetchDashboardData = async () => {
-            if (!selectedPredioId) {
+            if (!selectedPredioId || selectedPredioId === 'undefined') {
                 setLoading(false);
                 return;
             }
 
             try {
                 setLoading(true);
-                const response = await fetch(`/api/dashboard-stats.json?predioId=${selectedPredioId}`);
+                const response = await fetch(`http://localhost:8000/api/v1/predios/${selectedPredioId}/dashboard-stats`);
                 
                 if (!response.ok) {
                     throw new Error("No se pudieron sincronizar los indicadores de campo.");

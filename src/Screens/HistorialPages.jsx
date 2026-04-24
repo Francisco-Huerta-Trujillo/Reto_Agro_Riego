@@ -126,7 +126,7 @@ export function HistorialPage() {
 
   useEffect(() => {
     const fetchConsumo = async () => {
-      if (!selectedPredioId) {
+      if (!selectedPredioId || selectedPredioId === 'undefined') {
         setDataConsumo([]);
         setLoading(false);
         return;
@@ -134,7 +134,8 @@ export function HistorialPage() {
 
       try {
         setLoading(true);
-        const response = await fetch(`/api/consumo-semanal.json?predioId=${selectedPredioId}`);
+        // Llamamos al endpoint que construimos en FastAPI
+        const response = await fetch(`http://localhost:8000/api/v1/predios/${selectedPredioId}/chart-consumo`);
         if (!response.ok) throw new Error("No se pudieron cargar los datos de la gráfica.");
         const data = await response.json();
         
@@ -150,57 +151,99 @@ export function HistorialPage() {
     fetchConsumo();
   }, [selectedPredioId]);
 
-return (
-  <div className="space-y-6 pt-10 border-t border-slate-200 mt-10">
-    <div className="flex justify-between items-center">
-      <h2 className="text-2xl font-bold text-slate-800">Consumo Semanal</h2>
-      <span className="text-slate-500 text-sm">Predio activo: {selectedPredioId || 'No seleccionado'}</span>
-    </div>
-    
-    {/* Renderizado condicional: 
-        Solo mostramos el botón si NO está cargando y NO hay error 
-    */}
-    {!loading && !error && (
-      <button className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors animate-in fade-in duration-300">
-        <Download size={18}/> Exportar Reporte
-      </button>
-    )}
+  // Calculamos el consumo total sumando los valores de la gráfica
+  const consumoTotalSemanal = dataConsumo.reduce((acc, curr) => acc + (curr.value || 0), 0);
 
-    <div className="bg-white p-6 rounded-2xl border-2 border-slate-300 shadow-sm min-h-87.5 flex flex-col justify-center">
-      {loading ? (
-        <div className="flex flex-col items-center gap-3">
-          <Loader2 className="animate-spin text-green-600" size={32} />
-          <p className="text-slate-400">Procesando estadísticas...</p>
+  return (
+    <div className="space-y-6 pt-6 animate-in fade-in duration-500">
+      {/* Título y Subtítulo como en el Mockup */}
+      <div>
+        <h2 className="text-3xl font-bold text-slate-800">Historial de Eventos</h2>
+        <p className="text-slate-500 text-sm mt-1">Registro completo de todas las actividades del predio</p>
+      </div>
+
+      {/* Grid de 4 Tarjetas Superiores */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-blue-600 p-6 rounded-xl text-white shadow-md flex flex-col justify-between">
+          <div className="flex items-center gap-2 opacity-90 mb-2">
+            <Calendar size={20} />
+            <span className="text-xs font-bold uppercase tracking-wider">Total Eventos</span>
+          </div>
+          <span className="text-4xl font-bold">4</span>
         </div>
-      ) : error ? (
-        <div className="m-10 p-12 text-center bg-status-error/10 rounded-3xl border border-slate-300 border-status-error/20 shadow-xl">
-          <AlertCircle className="mx-auto text-status-error" size={64} />
-          <p className="text-2xl font-bold text-status-error mb-2">Error de Conexión</p>
-          <p className="text-gray-500 max-w-md mx-auto mb-6">Error: {error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="px-8 py-3 bg-status-error text-white rounded-full font-bold hover:brightness-110 transition-all transform hover:scale-105 shadow-lg shadow-status-error/30"
-          >
-            Reintentar
-          </button>
+        
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div className="flex items-center gap-2 text-slate-500 mb-2">
+            <Calendar size={20} className="text-green-500" />
+            <span className="text-xs font-bold uppercase tracking-wider">Alertas Mes</span>
+          </div>
+          <span className="text-4xl font-bold text-slate-800">12</span>
         </div>
-      ) : (
-        <div className="h-64 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={dataConsumo}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-              <XAxis dataKey="dia" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
-              <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
-              <Tooltip 
-                cursor={{fill: '#f8fafc'}}
-                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-              />
-              <Bar dataKey="consumo" fill="#3b82f6" radius={[6, 6, 0, 0]} barSize={40} />
-            </BarChart>
-          </ResponsiveContainer>
+
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div className="flex items-center gap-2 text-slate-500 mb-2">
+            <Droplets size={20} className="text-blue-500" />
+            <span className="text-xs font-bold uppercase tracking-wider">Consumo Semanal</span>
+          </div>
+          <span className="text-4xl font-bold text-slate-800">{consumoTotalSemanal.toFixed(0)}m³</span>
         </div>
-      )}
+
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div className="flex items-center gap-2 text-slate-500 mb-2">
+            <Clock size={20} className="text-purple-500" />
+            <span className="text-xs font-bold uppercase tracking-wider">Riegos Completados</span>
+          </div>
+          <span className="text-4xl font-bold text-slate-800">6</span>
+        </div>
+      </div>
+      
+      {/* Contenedor de la Gráfica (Borde Verde) */}
+      <div className="bg-white p-6 rounded-2xl border-2 border-green-500 shadow-sm min-h-100 flex flex-col">
+        <div className="mb-6">
+          <h3 className="text-2xl font-bold text-slate-800">Consumo de Agua</h3>
+          <p className="text-slate-400 text-sm uppercase tracking-wide">Total {consumoTotalSemanal.toFixed(0)}m³</p>
+        </div>
+
+        {loading ? (
+          <div className="flex-1 flex flex-col items-center justify-center gap-3">
+            <Loader2 className="animate-spin text-green-600" size={32} />
+            <p className="text-slate-400">Procesando estadísticas...</p>
+          </div>
+        ) : error ? (
+          <div className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-red-50 rounded-xl border border-red-100">
+            <AlertCircle className="text-red-500 mb-2" size={40} />
+            <p className="text-red-800 font-bold">Error de Datos</p>
+            <p className="text-red-600 text-sm">{error}</p>
+          </div>
+        ) : (
+          <div className="h-72 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={dataConsumo} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                {/* 👇 CLAVE: Cambiamos dia por day */}
+                <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
+                <Tooltip 
+                  cursor={{fill: '#f8fafc'}}
+                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                />
+                {/* 👇 CLAVE: Cambiamos consumo por value */}
+                <Bar dataKey="value" fill="#2563eb" radius={[4, 4, 0, 0]} barSize={48} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </div>
+
+      {/* Botón Gigante de Exportar Datos */}
+      <div className="flex justify-center mt-8 pb-10">
+        <button 
+          onClick={() => alert("Generando Excel...")}
+          className="flex items-center gap-3 px-12 py-5 bg-[#4ade80] hover:bg-green-500 text-white text-2xl font-bold rounded-2xl transition-all transform hover:scale-105 shadow-lg shadow-green-200"
+        >
+          <Download size={28}/> Exportar Datos
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
 }

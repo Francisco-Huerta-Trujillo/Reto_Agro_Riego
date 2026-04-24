@@ -23,15 +23,15 @@ const ChartConsumo = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!selectedPredioId) {
+      if (!selectedPredioId || selectedPredioId === 'undefined') {
         setData([]);
         setLoading(false);
         return;
-      }
+    }
 
       try {
         setLoading(true);
-        const response = await fetch(`/api/consumo-agua.json?predioId=${selectedPredioId}`);
+        const response = await fetch(`http://localhost:8000/api/v1/predios/${selectedPredioId}/chart-consumo`);
         
         if (!response.ok) {
           throw new Error('No se pudo cargar el historial de consumo.');

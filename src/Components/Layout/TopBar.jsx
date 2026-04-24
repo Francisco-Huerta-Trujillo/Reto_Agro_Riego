@@ -50,8 +50,8 @@ function TopBar() {
                             {!loadingPredios && predioError && <option value="">Error al cargar</option>}
                             {!loadingPredios && !predioError && predios.length === 0 && <option value="">No hay predios</option>}
                             {!loadingPredios && !predioError && predios.map((predio) => (
-                                <option key={predio.id} value={predio.id}>
-                                    {predio.name || predio.nombre || predio.label || predio.id}
+                                <option key={predio.id_predio} value={predio.id_predio}>
+                                    {`Predio en Coordenadas: ${predio.coordenadas || "Desconocidas"}`}
                                 </option>
                             ))}
                         </select>
