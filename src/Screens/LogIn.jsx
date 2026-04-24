@@ -32,11 +32,10 @@ export default function Login() {
 
       if (res.ok) {
         const data = await res.json();
-        // FastAPI devuelve el token bajo el nombre "access_token" por defecto
         localStorage.setItem('token', data.access_token);
+        localStorage.removeItem('selectedPredioId');
+        window.location.href = '/'; 
         
-        // Redirigir al home
-        navigate('/');
       } else {
         // Si el usuario se equivoca, FastAPI manda el error en data.detail
         const errData = await res.json();
