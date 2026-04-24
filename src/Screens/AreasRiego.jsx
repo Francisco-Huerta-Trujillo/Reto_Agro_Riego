@@ -41,18 +41,18 @@ export function AreasRiegoPage() {
                 name: `Parcela ${String(area.id_areariego).substring(0, 6).toUpperCase()}`,
                 estadoRiego: 'activo',
 
-                humedad: ultima.humedad_suelo || 0,
-                potencialHidrico: ultima.potencial_hidrico || 0,
-                temperaturaSuelo: ultima.temperatura_suelo || 0,
-                flujoAgua: ultima.flujo_consumo_agua || 0,
-                consumoDiario: ultima.flujo_consumo_agua || 0, 
-                temperaturaAmbiental: ultima.temperatura_ambiente || 0,
-                humedadRelativa: ultima.humedad_relativa_ambiente || 0,
-                evapotranspiracion: ultima.evapotranspiracion || 0,
-                consumoSemanal: (ultima.flujo_consumo_agua || 0) * 7, // Estimación basada en el flujo
-                electroconductividad: ultima.electroconductividad || 0,
-                velocidadViento: ultima.velocidad_viento || 0,
-                radiacionSolar: ultima.radiacion_solar || 0,
+                humedad: Number(Number(ultima.humedad_suelo || 0).toFixed(1)),
+                potencialHidrico: Number(Number(ultima.potencial_hidrico || 0).toFixed(1)),
+                temperaturaSuelo: Number(Number(ultima.temperatura_suelo || 0).toFixed(1)),
+                flujoAgua: Number(Number(ultima.flujo_consumo_agua || 0).toFixed(1)),
+                consumoDiario: Number(Number(ultima.flujo_consumo_agua || 0).toFixed(1)), 
+                temperaturaAmbiental: Number(Number(ultima.temperatura_ambiente || 0).toFixed(1)),
+                humedadRelativa: Number(Number(ultima.humedad_relativa_ambiente || 0).toFixed(1)),
+                evapotranspiracion: Number(Number(ultima.evapotranspiracion || 0).toFixed(2)),
+                consumoSemanal: Number((Number(ultima.flujo_consumo_agua || 0) * 7).toFixed(1)),
+                electroconductividad: Number(Number(ultima.electroconductividad || 0).toFixed(2)),
+                velocidadViento: Number(Number(ultima.velocidad_viento || 0).toFixed(1)),
+                radiacionSolar: Number(Number(ultima.radiacion_solar || 0).toFixed(0)),
 
                 // 🟡 DATOS ESTÉTICOS (Porque aún no existen columnas para esto en la BD)
                 area: index % 2 === 0 ? 5.2 : 3.8, // Hectáreas
