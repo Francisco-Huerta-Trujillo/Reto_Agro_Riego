@@ -21,10 +21,12 @@ export function PredioProvider({ children }) {
           setPredioError(null);
 
           const storedId = localStorage.getItem('selectedPredioId');
-          const initialId = storedId && data.some((p) => String(p.id) === String(storedId))
+          
+          // ✨ CORRECCIÓN AQUÍ: Usamos p.id_predio en lugar de p.id
+          const initialId = storedId && data.some((p) => String(p.id_predio) === String(storedId))
             ? storedId
             : data.length > 0
-              ? String(data[0].id)
+              ? String(data[0].id_predio) // Auto-selecciona el primero si no hay uno guardado
               : '';
 
           setSelectedPredioId(initialId);
@@ -50,7 +52,7 @@ export function PredioProvider({ children }) {
     localStorage.setItem('selectedPredioId', id);
   };
 
-  const selectedPredio = predios.find((p) => String(p.id) === String(selectedPredioId)) || null;
+  const selectedPredio = predios.find((p) => String(p.id_predio) === String(selectedPredioId)) || null;
 
   return (
     <PredioContext.Provider value={{ predios, selectedPredio, selectedPredioId, setPredio, loadingPredios, predioError }}>
