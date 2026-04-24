@@ -16,7 +16,7 @@ import './TopBar.css';
 function TopBar() {
     const navigate = useNavigate();
     const { isColorBlindMode, toggleColorBlindMode } = useColorBlind();
-    const { predios, selectedPredioId, selectedPredio, setPredio, loadingPredios, predioError } = usePredio();
+    const { predios, selectedPredioId, selectedPredio, setPredio, loadingPredios, predioError, getPredioId } = usePredio();
     const [localSelected, setLocalSelected] = useState(selectedPredioId);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -37,7 +37,9 @@ function TopBar() {
     }, []);
 
     const selectedLabel = selectedPredio
-      ? `Predio ${String(selectedPredio.id_predio).substring(0, 6).toUpperCase()} · ${selectedPredio.coordenadas || 'Coordenadas desconocidas'}`
+      ? `Predio ${String(selectedPredio.id_predio || selectedPredio.id || selectedPredio._id).substring(0, 6).toUpperCase()} · ${selectedPredio.coordenadas || 'Coordenadas desconocidas'}`
+      : localSelected && predios.length > 0
+      ? `Predio ${localSelected.substring(0, 6).toUpperCase()}`
       : loadingPredios
       ? 'Cargando predios...'
       : predioError
@@ -93,20 +95,26 @@ function TopBar() {
                             {loadingPredios && <div className="dropdown-placeholder">Cargando predios...</div>}
                             {!loadingPredios && predioError && <div className="dropdown-placeholder text-error">Error al cargar predios</div>}
                             {!loadingPredios && !predioError && predios.length === 0 && <div className="dropdown-placeholder">No hay predios disponibles</div>}
-                            {!loadingPredios && !predioError && predios.map((predio) => (
-                                <button
-                                    key={predio.id_predio}
-                                    type="button"
-                                    onClick={() => handlePredioSelect(predio.id_predio)}
-                                    className={`dropdown-option ${String(localSelected) === String(predio.id_predio) ? 'selected' : ''}`}
-                                >
-                                    <div className="option-info">
-                                        <span className="option-title">{`Predio ${String(predio.id_predio).substring(0, 6).toUpperCase()}`}</span>
-                                        <span className="option-subtitle">{predio.coordenadas || 'Coordenadas desconocidas'}</span>
-                                    </div>
-                                    <span className="option-meta">{String(predio.id_predio).substring(0, 8)}...</span>
-                                </button>
-                            ))}
+                            {!loadingPredios && !predioError && predios.map((predio) => {
+                                const predioId = getPredioId(predio);
+                                const label = predio.nombre || predio.name || `Predio ${predioId.substring(0, 6).toUpperCase()}`;
+                                const subtitle = predio.coordenadas || 'Coordenadas desconocidas';
+
+                                return (
+                                    <button
+                                        key={predioId}
+                                        type="button"
+                                        onClick={() => handlePredioSelect(predioId)}
+                                        className={`dropdown-option ${String(localSelected) === predioId ? 'selected' : ''}`}
+                                    >
+                                        <div className="option-info">
+                                            <span className="option-title">{label}</span>
+                                            <span className="option-subtitle">{subtitle}</span>
+                                        </div>
+                                        <span className="option-meta">{predioId.substring(0, 8)}...</span>
+                                    </button>
+                                );
+                            })}
                         </div>
                     )}
                 </div>

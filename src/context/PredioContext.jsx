@@ -3,10 +3,16 @@ import { predioService } from '../Services/predioService';
 
 const PredioContext = createContext();
 
+const getPredioId = (predio) => {
+  if (!predio) return '';
+  return String(predio.id_predio || predio.id || predio._id || '');
+};
+
 export function PredioProvider({ children }) {
   const [predios, setPredios] = useState([]);
   const [selectedPredioId, setSelectedPredioId] = useState(() => {
-    return localStorage.getItem('selectedPredioId') || '';
+    const storedId = localStorage.getItem('selectedPredioId');
+    return storedId && storedId !== 'undefined' ? storedId : '';
   });
   const [loadingPredios, setLoadingPredios] = useState(true);
   const [predioError, setPredioError] = useState(null);
@@ -21,12 +27,10 @@ export function PredioProvider({ children }) {
           setPredioError(null);
 
           const storedId = localStorage.getItem('selectedPredioId');
-          
-          // ✨ CORRECCIÓN AQUÍ: Usamos p.id_predio en lugar de p.id
-          const initialId = storedId && data.some((p) => String(p.id_predio) === String(storedId))
-            ? storedId
+          const initialId = storedId && data.some((p) => getPredioId(p) === String(storedId))
+            ? String(storedId)
             : data.length > 0
-              ? String(data[0].id_predio) // Auto-selecciona el primero si no hay uno guardado
+              ? getPredioId(data[0])
               : '';
 
           setSelectedPredioId(initialId);
@@ -48,14 +52,15 @@ export function PredioProvider({ children }) {
   }, []);
 
   const setPredio = (id) => {
-    setSelectedPredioId(id);
-    localStorage.setItem('selectedPredioId', id);
+    const normalizedId = String(id || '');
+    setSelectedPredioId(normalizedId);
+    localStorage.setItem('selectedPredioId', normalizedId);
   };
 
-  const selectedPredio = predios.find((p) => String(p.id_predio) === String(selectedPredioId)) || null;
+  const selectedPredio = predios.find((p) => getPredioId(p) === String(selectedPredioId)) || null;
 
   return (
-    <PredioContext.Provider value={{ predios, selectedPredio, selectedPredioId, setPredio, loadingPredios, predioError }}>
+    <PredioContext.Provider value={{ predios, selectedPredio, selectedPredioId, setPredio, loadingPredios, predioError, getPredioId }}>
       {children}
     </PredioContext.Provider>
   );
