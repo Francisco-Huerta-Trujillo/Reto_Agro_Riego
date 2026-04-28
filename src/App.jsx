@@ -88,7 +88,7 @@ function App() {
 
                 {/* ✨ RUTA PROTEGIDA POR ROL ✨ */}
                 {/* Solo los usuarios que tengan "organizador" en su localStorage podrán entrar a /admin */}
-                <Route element={<RoleProtectedLayout allowedRoles={['organizador', 'admin', 'Organizador', 'Admin']} />}>
+                <Route element={<RoleProtectedLayout allowedRoles={['organizador', 'Organizador']} />}>
                   <Route path="admin" element={<AdminDashboardPage />} />
                 </Route>
                 

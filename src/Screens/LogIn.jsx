@@ -50,15 +50,17 @@ export default function Login() {
           
           console.log("Logueado con rol:", rolLimpio); // 👈 Revisa la consola (F12)
 
+          
+
           // 3. Redirección exacta
           if (rolLimpio === 'organizador') {
-            navigate('/admin');
+            window.location.href = 'admin';
             return; // 👈 Importante para detener la ejecución aquí
           }
         }
         
         // Si no es organizador o no tiene rol, va al inicio
-        navigate('/');
+        window.location.href = '/';
         
       } else {
         // Si el usuario se equivoca, FastAPI manda el error en data.detail
