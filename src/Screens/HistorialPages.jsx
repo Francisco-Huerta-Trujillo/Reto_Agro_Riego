@@ -3,7 +3,7 @@ import { usePredio } from '../context/PredioContext';
 import { 
   Droplets, MapPin, Clock, TrendingDown, TrendingUp, ChevronRight, 
   ArrowLeft, Calendar, Thermometer, Loader2, AlertCircle, Search, 
-  Download, User 
+  Download, User, ChevronLeft 
 } from 'lucide-react';
 import { 
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
@@ -121,8 +121,33 @@ export function HistorialPage() {
   const [dataConsumo, setDataConsumo] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // ✨ NUEVO ESTADO PARA CONTROLAR LAS SEMANAS ✨
+  const [semanasOffset, setSemanasOffset] = useState(0); 
 
-  const { selectedPredioId, loadingPredios } = usePredio();
+  const { selectedPredioId } = usePredio();
+
+  // Función auxiliar para calcular el rango de fechas
+  const getRangoFechas = (offset) => {
+    const hoy = new Date();
+    // Encontrar el lunes de la semana actual
+    const diaSemana = hoy.getDay() || 7; 
+    const lunes = new Date(hoy);
+    lunes.setDate(hoy.getDate() - diaSemana + 1 + (offset * 7));
+    
+    // Encontrar el domingo de esa semana
+    const domingo = new Date(lunes);
+    domingo.setDate(lunes.getDate() + 6);
+
+    return {
+      startStr: lunes.toISOString().split('T')[0],
+      endStr: domingo.toISOString().split('T')[0],
+      // Texto bonito para la UI (ej. "12 Ago - 18 Ago")
+      label: `${lunes.toLocaleDateString('es-MX', {day: 'numeric', month: 'short'})} - ${domingo.toLocaleDateString('es-MX', {day: 'numeric', month: 'short'})}`
+    };
+  };
+
+  const rangoActual = getRangoFechas(semanasOffset);
 
   useEffect(() => {
     const fetchConsumo = async () => {
@@ -134,14 +159,27 @@ export function HistorialPage() {
 
       try {
         setLoading(true);
-        // Llamamos al endpoint que construimos en FastAPI
-        const response = await fetch(`http://localhost:8000/api/v1/predios/${selectedPredioId}/chart-consumo`);
+        const url = `http://localhost:8000/api/v1/predios/${selectedPredioId}/chart-consumo?start_date=${rangoActual.startStr}&end_date=${rangoActual.endStr}`;
+        const response = await fetch(url);
+        
         if (!response.ok) throw new Error("No se pudieron cargar los datos de la gráfica.");
-        const data = await response.json();
+        const data = await response.json(); // Lo que llega del backend
         
-        if (!Array.isArray(data) || data.length === 0) throw new Error("Los datos de consumo están vacíos.");
+        // Plantilla de 7 días (ajusta los nombres si tu Postgres los manda en español)
+        const diasSemana = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         
-        setDataConsumo(data);
+        const dataCompleta = diasSemana.map(dia => {
+          // Buscamos si el backend nos mandó datos para este día
+          const datoEncontrado = data.find(d => d.day === dia);
+          // Si hay dato, lo usamos. Si no, ponemos el consumo en 0.
+          return {
+            day: dia,
+            value: datoEncontrado ? datoEncontrado.value : 0
+          };
+        });
+
+        // Guardamos la data ya formateada con los 7 días garantizados
+        setDataConsumo(dataCompleta);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -149,7 +187,7 @@ export function HistorialPage() {
       }
     };
     fetchConsumo();
-  }, [selectedPredioId]);
+  }, [selectedPredioId, semanasOffset]);
 
   // Calculamos el consumo total sumando los valores de la gráfica
   const consumoTotalSemanal = dataConsumo.reduce((acc, curr) => acc + (curr.value || 0), 0);
@@ -199,11 +237,36 @@ export function HistorialPage() {
       
       {/* Contenedor de la Gráfica (Borde Verde) */}
       <div className="bg-white p-6 rounded-2xl border-2 border-green-500 shadow-sm min-h-100 flex flex-col">
-        <div className="mb-6">
-          <h3 className="text-2xl font-bold text-slate-800">Consumo de Agua</h3>
-          <p className="text-slate-400 text-sm uppercase tracking-wide">Total {consumoTotalSemanal.toFixed(0)}m³</p>
+        
+        {/* ✨ CABECERA MODIFICADA CON NAVEGACIÓN DE SEMANAS ✨ */}
+        <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+          <div>
+            <h3 className="text-2xl font-bold text-slate-800">Consumo de Agua</h3>
+            <p className="text-slate-400 text-sm uppercase tracking-wide">Total {consumoTotalSemanal.toFixed(0)}m³</p>
+          </div>
+          
+          {/* Controles de semana */}
+          <div className="flex items-center gap-4 bg-slate-50 p-1.5 rounded-lg border border-slate-200">
+            <button 
+              onClick={() => setSemanasOffset(prev => prev - 1)}
+              className="p-1.5 hover:bg-white hover:shadow-sm rounded-md transition-all text-slate-500 hover:text-green-600"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <span className="text-sm font-medium text-slate-700 min-w-30 text-center">
+              {semanasOffset === 0 ? "Esta Semana" : rangoActual.label}
+            </span>
+            <button 
+              onClick={() => setSemanasOffset(prev => prev + 1)}
+              disabled={semanasOffset === 0}
+              className={`p-1.5 rounded-md transition-all ${semanasOffset === 0 ? 'text-slate-300 cursor-not-allowed' : 'hover:bg-white hover:shadow-sm text-slate-500 hover:text-green-600'}`}
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
         </div>
 
+        {/* ✨ RENDERIZADO CONDICIONAL EXACTO ✨ */}
         {loading ? (
           <div className="flex-1 flex flex-col items-center justify-center gap-3">
             <Loader2 className="animate-spin text-green-600" size={32} />
@@ -215,19 +278,23 @@ export function HistorialPage() {
             <p className="text-red-800 font-bold">Error de Datos</p>
             <p className="text-red-600 text-sm">{error}</p>
           </div>
+        ) : dataConsumo.length === 0 ? (
+          <div className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-slate-50 rounded-xl border border-dashed border-slate-300 h-72">
+            <Search className="text-slate-400 mb-2" size={40} />
+            <p className="text-slate-600 font-bold">Sin datos para esta semana</p>
+            <p className="text-slate-400 text-sm">No se registraron mediciones de consumo en este rango de fechas.</p>
+          </div>
         ) : (
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={dataConsumo} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                {/* 👇 CLAVE: Cambiamos dia por day */}
                 <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
                 <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
                 <Tooltip 
                   cursor={{fill: '#f8fafc'}}
                   contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                 />
-                {/* 👇 CLAVE: Cambiamos consumo por value */}
                 <Bar dataKey="value" fill="#2563eb" radius={[4, 4, 0, 0]} barSize={48} />
               </BarChart>
             </ResponsiveContainer>
