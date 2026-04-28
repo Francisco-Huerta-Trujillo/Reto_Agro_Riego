@@ -1,9 +1,14 @@
 import { NavLink } from "react-router-dom";
-import { HiOutlineLocationMarker, HiOutlineClock, HiOutlineBell, HiOutlineHome} from "react-icons/hi"
+// ✨ 1. Importamos un icono nuevo (HiOutlineShieldCheck) para el panel
+import { HiOutlineLocationMarker, HiOutlineClock, HiOutlineBell, HiOutlineHome, HiOutlineShieldCheck} from "react-icons/hi"
 import './NavBar.css'
 import { LogoRiego } from "../../assets/logo";
 
 function NavBar(){
+    // ✨ 2. Obtenemos el rol actual y verificamos si tiene permiso
+    const userRole = localStorage.getItem("rol");
+    const isAdmin = ['organizador','Organizador'].includes(userRole);
+
     return(
         <nav className = "sidebar">
             <div className = "sidebar-logo">
@@ -39,6 +44,17 @@ function NavBar(){
                         <span>Alertas</span>
                     </NavLink>
                 </li>
+
+                {/* ✨ 3. BOTÓN CONDICIONAL ✨ */}
+                {/* Solo se dibuja si isAdmin es true */}
+                {isAdmin && (
+                    <li>
+                        <NavLink to="/admin" className={({ isActive }) => isActive ? "active" : ""}>
+                            <HiOutlineShieldCheck className="icon" />
+                            <span>Panel Admin</span>
+                        </NavLink>
+                    </li>
+                )}
             </ul>
         </nav>
     )

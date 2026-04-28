@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
-// Verifica que estas rutas sean EXACTAS
+
 import Home from "./Screens/Home";
 import { AreasRiegoPage } from "./Screens/AreasRiego";
 import { HistorialPage } from "./Screens/HistorialPages";
 import { AlertsPages } from "./Screens/AlertsPages";
 import Login from "./Screens/LogIn"; 
+import { AdminDashboardPage } from "./Screens/AdminDashboardPages"; 
 
 import NavBar from "./Components/Layout/NavBar";
 import TopBar from "./Components/Layout/TopBar";
@@ -14,11 +15,24 @@ import { PredioProvider } from "./context/PredioContext";
 
 import "./App.css";
 
-// 1. Asegúrate de que PrivateLayout esté fuera del componente App
+// 1. Guardia de Autenticación General (Para logueados)
 const PrivateLayout = () => {
   const isAuth = localStorage.getItem("token");
-  // Agregamos una validación simple para evitar errores si localStorage falla
   return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
+};
+
+// ✨ 2. NUEVO GUARDIA DE ROLES ✨
+// Revisa si el rol guardado coincide con los roles permitidos
+const RoleProtectedLayout = ({ allowedRoles }) => {
+  // Asumimos que al hacer login guardaste el rol en localStorage
+  const userRole = localStorage.getItem("rol"); 
+  
+  if (!allowedRoles.includes(userRole)) {
+    // Si no tiene el rol, lo mandamos al inicio para que no vea la pantalla
+    return <Navigate to="/" replace />; 
+  }
+
+  return <Outlet />;
 };
 
 const pageTitles = {
@@ -27,6 +41,7 @@ const pageTitles = {
   '/historial': 'AgroRiego | Historial',
   '/alertas': 'AgroRiego | Alertas',
   '/login': 'AgroRiego | Login',
+  '/admin': 'AgroRiego | Panel de Administración', // Añadimos el título
 };
 
 function TitleManager() {
@@ -66,10 +81,17 @@ function App() {
             {/* Rutas Privadas */}
             <Route element={<PrivateLayout />}>
               <Route element={<DashboardLayout />}>
-                <Route index element={<Home />} /> {/* Usar 'index' para la ruta raíz interna */}
+                <Route index element={<Home />} /> 
                 <Route path="areas" element={<AreasRiegoPage />} />
                 <Route path="historial" element={<HistorialPage />} />
                 <Route path="alertas" element={<AlertsPages />} />
+
+                {/* ✨ RUTA PROTEGIDA POR ROL ✨ */}
+                {/* Solo los usuarios que tengan "organizador" en su localStorage podrán entrar a /admin */}
+                <Route element={<RoleProtectedLayout allowedRoles={['organizador', 'admin', 'Organizador', 'Admin']} />}>
+                  <Route path="admin" element={<AdminDashboardPage />} />
+                </Route>
+                
               </Route>
             </Route>
 

@@ -32,9 +32,33 @@ export default function Login() {
 
       if (res.ok) {
         const data = await res.json();
+
+        localStorage.removeItem('rol');
+        localStorage.removeItem('userEmail');
+        
+        // 1. Guardamos el token
         localStorage.setItem('token', data.access_token);
         localStorage.removeItem('selectedPredioId');
-        window.location.href = '/'; 
+
+        // 2. Verificamos y limpiamos el rol
+        if (data.user && data.user.rol) {
+          // trim() quita espacios accidentales y toLowerCase() lo estandariza
+          const rolLimpio = data.user.rol.trim().toLowerCase(); 
+          
+          localStorage.setItem('rol', rolLimpio);
+          localStorage.setItem('userEmail', data.user.email);
+          
+          console.log("Logueado con rol:", rolLimpio); // 👈 Revisa la consola (F12)
+
+          // 3. Redirección exacta
+          if (rolLimpio === 'organizador') {
+            navigate('/admin');
+            return; // 👈 Importante para detener la ejecución aquí
+          }
+        }
+        
+        // Si no es organizador o no tiene rol, va al inicio
+        navigate('/');
         
       } else {
         // Si el usuario se equivoca, FastAPI manda el error en data.detail
